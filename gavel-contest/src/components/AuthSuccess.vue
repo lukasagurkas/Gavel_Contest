@@ -14,6 +14,15 @@
 
 <script>
 import firebase from 'firebase/compat/app'
+import AuthenticationService from '@/services/AuthenticationService'
+
+async function register(vm) {
+  const response = await AuthenticationService.register({
+          email: vm.email,
+          name: vm.name
+        });
+}
+
 export default {
  data(){
      return {
@@ -33,6 +42,8 @@ export default {
          vm.email = vm.user.email;
          vm.photo = vm.user.photoURL;
          vm.userId = vm.user.uid;
+         
+         register(vm)
       }
     });
   },
