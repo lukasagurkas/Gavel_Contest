@@ -5,6 +5,14 @@
 npm install
 ```
 
+```
+npm install @vue/cli-service -g 
+```
+
+```
+npm i -g vue-template-compiler
+```
+
 ### Compiles and hot-reloads for development
 ```
 npm run serve
