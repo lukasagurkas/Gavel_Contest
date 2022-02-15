@@ -16,7 +16,9 @@
     "cors": "^2.8.5",
     "express": "^4.17.2",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "sequelize": "^6.16.1",
+    "sqlite3": "^5.0.2"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.12.0",
