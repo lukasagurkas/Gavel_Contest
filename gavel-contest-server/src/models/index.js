@@ -20,6 +20,7 @@ fs
         const model = sequelize.define(path.join(__dirname, file))
         db[model.name] = model
     })
+
 db.sequelize = sequelize
 db.Sequelize = Sequelize
 

@@ -41,9 +41,8 @@ export default {
          vm.name = vm.user.displayName;
          vm.email = vm.user.email;
          vm.photo = vm.user.photoURL;
-         vm.userId = vm.user.uid;
-         
-         register(vm)
+         vm.userId = vm.user.uid;    
+         register(vm)     
       }
     });
   },
