@@ -8,13 +8,9 @@ const sequelize = new Sequelize(
 )
 
 module.exports = (sequelize, DataTypes) => {
-    sequelize.define('user', {
-        email: {
-            type: DataTypes.STRING,
-            unique: true
-        },
+    sequelize.define('teams', {
         name: {
-            type: DataTypes.STRING
+            type: Sequelize.DataTypes.STRING
         }
     })
 }

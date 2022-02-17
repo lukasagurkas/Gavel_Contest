@@ -11,15 +11,35 @@ const sequelize = new Sequelize(
     config.db.options
 )
 
-fs
-    .readdirSync(__dirname)
-    .filter((file) =>
-        file !== 'index.js'
-    )
-    .forEach((file) => {
-        const model = sequelize.define(path.join(__dirname, file))
-        db[model.name] = model
-    })
+const User = sequelize.define('user', {
+    email: {
+        type: Sequelize.DataTypes.STRING,
+        unique: true
+    },
+    name: {
+        type: Sequelize.DataTypes.STRING
+    }
+})
+
+db['user'] = User
+
+const Team = sequelize.define('team', {
+    name: {
+        type: Sequelize.DataTypes.STRING
+    }
+})
+
+db['team'] = Team
+
+// fs
+//     .readdirSync(__dirname)
+//     .filter((file) =>
+//         file !== 'index.js'
+//     )
+//     .forEach((file) => {
+//         const model = sequelize.define(path.join(__dirname, file))
+//         db[model.name] = model
+//     })
 
 db.sequelize = sequelize
 db.Sequelize = Sequelize
