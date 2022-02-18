@@ -10,7 +10,8 @@ const sequelize = new Sequelize(
 module.exports = (sequelize, DataTypes) => {
     sequelize.define('teams', {
         name: {
-            type: Sequelize.DataTypes.STRING
+            type: Sequelize.DataTypes.STRING,
+            unique: true
         }
     })
 }

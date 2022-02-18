@@ -61,8 +61,10 @@ export default {
       firebase.auth().signOut();
     },
     createTeam() {
+      const val = document.querySelector("input[name=team-name]").value
+      document.querySelector("input[name=team-name]").value = ''
       createNewTeam({
-        name: document.querySelector("input[name=team-name]").value,
+        name: val,
         email: firebase.auth().currentUser.email
       })
     }

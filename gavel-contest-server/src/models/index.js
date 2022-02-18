@@ -31,6 +31,17 @@ const Team = sequelize.define('team', {
 
 db['team'] = Team
 
+const UserTeam = sequelize.define('userteam', {
+    userID: {
+        type: Sequelize.DataTypes.INTEGER,
+    },
+    teamID: {
+        type: Sequelize.DataTypes.INTEGER
+    }
+})
+
+db['userteam'] = UserTeam
+
 // fs
 //     .readdirSync(__dirname)
 //     .filter((file) =>
