@@ -1,6 +1,7 @@
 const AuthenticationController = require('./controllers/AuthenticationController')
 const TeamCreationController = require('./controllers/TeamCreationController.js')
 const TeamCreationControllerPolicy = require('./policies/TeamCreationControllerPolicy.js')
+const TeamGetterController = require('./controllers/TeamGetterController')
 
 module.exports = (app) => {
     app.post('/register', 
@@ -9,4 +10,10 @@ module.exports = (app) => {
     app.post('/createTeam',
         TeamCreationControllerPolicy.create,
         TeamCreationController.create)
+
+    app.post('/joinTeam', 
+        TeamCreationController.join)
+
+    app.get('/getAllTeams',
+        TeamGetterController.getAll)
 }

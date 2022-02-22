@@ -3,9 +3,11 @@ import App from './App.vue'
 import VueRouter from 'vue-router'
 import firebase from 'firebase/compat/app'
 import router from './router'
+import VuejsDialog from "vuejs-dialog"
 import { firebaseConfig } from './helpers/firebase.config'
 
 Vue.use(VueRouter)
+Vue.use(VuejsDialog)
 
 new Vue({
   router,
