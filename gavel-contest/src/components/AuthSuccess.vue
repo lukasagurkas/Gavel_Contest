@@ -5,6 +5,8 @@
     <hr>
     <input name='team-name' type='name' placeholder='Enter Team Name'>
     <button @click='createTeam'>Create new team</button>
+    <br>
+    <div class="error" v-html="error"/>
     <!--<img :src="photo" style='height: 120px'> <br>
     <p>{{name}}</p>
     <p>{{email}}</p>
@@ -19,20 +21,6 @@ import firebase from 'firebase/compat/app'
 import AuthenticationService from '@/services/AuthenticationService'
 import TeamCreationService from '@/services/TeamCreationService'
 
-async function register(vm) {
-  const response = await AuthenticationService.register({
-          email: vm.email,
-          name: vm.name
-        });
-}
-
-async function createNewTeam(info) {
-  await TeamCreationService.create({
-    name: info.name,
-    email: info.email
-  })
-}
-
 export default {
  data(){
      return {
@@ -43,8 +31,9 @@ export default {
        user: {}
      }
    },
-   created() {
+   mounted() {
      var vm = this
+     var reg = this.register
      firebase.auth().onAuthStateChanged(function(user) {
        if (user) {
          vm.user = user;
@@ -52,22 +41,41 @@ export default {
          vm.email = vm.user.email;
          vm.photo = vm.user.photoURL;
          vm.userId = vm.user.uid;    
-         register(vm)     
+         reg(vm) 
       }
     });
+
+
   },
   methods: {
     logOut() {
       firebase.auth().signOut();
     },
-    createTeam() {
+    async createTeam() {
       const val = document.querySelector("input[name=team-name]").value
       document.querySelector("input[name=team-name]").value = ''
-      createNewTeam({
-        name: val,
-        email: firebase.auth().currentUser.email
-      })
+      try{
+        await TeamCreationService.create({
+          name: val,
+          email: firebase.auth().currentUser.email
+        })
+      } catch (error) {
+        document.querySelector(".error").innerHTML = error.response.data.error
+      }
+    },
+    async register(vm) {
+    await AuthenticationService.register({
+            email: vm.email,
+            name: vm.name
+          });
     }
   },
+  
 };
 </script>
+
+<style scoped>
+.error {
+  color: red
+}
+</style>

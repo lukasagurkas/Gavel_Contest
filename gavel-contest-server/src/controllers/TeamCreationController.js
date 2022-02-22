@@ -10,9 +10,13 @@ module.exports = {
         })
 
         if (await db.userteam.findOne({where: {userID:userId}}) != null) {
-            console.log("User already has team")
+            res.status(400).send({
+                error: "User already has team"
+            })
         } else if (await db.team.findOne({where: {name:req.body.name}}) != null) {
-            console.log("Team name already exists")
+            res.status(400).send({
+                error: "Team name already exists"
+            })
         } else {
             try {
                 await db.team.create({name:req.body.name})

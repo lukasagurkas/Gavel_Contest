@@ -7,7 +7,9 @@ module.exports = {
         const {error, value} = schema.validate(req.body.name)
 
         if (error) {
-            console.log("Please provide a team name between 3 and 30 characters")
+            res.status(400).send({
+                error: "Please provide a team name between 3 and 30 characters"
+            })
         } else {
             next()
         }
