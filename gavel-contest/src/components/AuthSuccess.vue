@@ -58,6 +58,22 @@
     <p>{{userId}}</p>
     <hr>
     <pre>{{user}}</pre>-->
+
+    <div id="selectGameDiv">
+      <label for="selectGame">Select which game you want to view:</label>
+
+      <select name="selectGame" id="selectGame">
+        <option
+          v-for="(data, index) in gameListJSON.data"
+          :key="index"
+        >
+          {{ data.team1Name + " " + data.team2Name }}
+        </option>
+      </select>
+    </div>
+
+    <button id="import" @click="viewGame">View game</button>
+
   </div>
 </template>
 
@@ -69,6 +85,7 @@ import TeamGetterService from "@/services/TeamGetterService";
 import ConfirmDialogue from "../components/ConfirmDialogue.vue";
 import AlertDialogue from "../components/AlertDialogue.vue";
 import GameInfoServe from "@/services/GameInfoService";
+import GameGetterService from "@/services/GameGetterService";
 
 export default {
   data() {
@@ -80,12 +97,14 @@ export default {
       user: {},
       teamJSON: {},
       gameJSON: {},
+      gameListJSON: {}
     };
   },
   mounted() {
     var vm = this;
     var reg = this.register;
     var team = this.getTeams;
+    var games = this.getGames;
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         vm.user = user;
@@ -98,6 +117,7 @@ export default {
     });
 
     team();
+    games();
   },
   components: {
     ConfirmDialogue,
@@ -130,6 +150,11 @@ export default {
     async getTeams() {
       try {
         this.teamJSON = await TeamGetterService.getAll();
+      } catch (error) {}
+    },
+    async getGames() {
+      try {
+        this.gameListJSON = await GameGetterService.getAll();
       } catch (error) {}
     },
     async clickedTeam(name) {
@@ -190,6 +215,11 @@ export default {
         fr.readAsText(files.item(0));
       }
     },
+    async viewGame() {
+      const gameName = document.querySelector("#selectGameDiv select");
+
+      console.log(gameName)
+    }
   },
 };
 </script>
