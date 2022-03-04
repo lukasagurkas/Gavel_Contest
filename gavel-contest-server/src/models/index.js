@@ -42,6 +42,21 @@ const UserTeam = sequelize.define('userteam', {
 
 db['userteam'] = UserTeam
 
+const Game = sequelize.define('game', {
+    game: {
+        type: Sequelize.DataTypes.JSON
+    },
+    team1Name: {
+        type: Sequelize.DataTypes.STRING
+    },
+    team2Name: {
+        type: Sequelize.DataTypes.STRING
+    }
+})
+
+db['game'] = Game
+
+
 // fs
 //     .readdirSync(__dirname)
 //     .filter((file) =>

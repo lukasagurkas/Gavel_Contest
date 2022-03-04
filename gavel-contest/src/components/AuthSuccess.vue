@@ -1,20 +1,57 @@
 <template>
   <div>
     <h1>Signup succeeded</h1>
-    <button @click='logOut'>Log out</button>
-    <hr>
-    <input name='team-name' type='name' placeholder='Enter Team Name'>
-    <button @click='createTeam'>Create new team</button>
-    <br>
-    <div class="error" v-html="error"/>
-    <br>
+    <button @click="logOut">Log out</button>
+    <hr />
+    <input name="team-name" type="name" placeholder="Enter Team Name" />
+    <button @click="createTeam">Create new team</button>
+    <br />
+    <div class="error" v-html="error" />
+    <br />
     <div>
       <ul class="team-list">
-        <li class="team-name" @click='clickedTeam(data.name)' v-for="(data, index) in teamJSON.data" :key="index">{{data.name}}</li>
+        <li
+          class="team-name"
+          @click="clickedTeam(data.name)"
+          v-for="(data, index) in teamJSON.data"
+          :key="index"
+        >
+          {{ data.name }}
+        </li>
         <confirm-dialogue ref="confirmDialogue"></confirm-dialogue>
         <alert-dialogue ref="alertDialogue"></alert-dialogue>
       </ul>
     </div>
+    <input type="file" id="selectFiles" value="Import" accept=".json" /><br />
+    <!--for displaying json <pre id="result"></pre>-->
+
+    <div id="selectTeamName1Div">
+      <label for="Team 1">Choose team 1:</label>
+
+      <select name="Team 1" id="Team 1">
+        <option
+          v-for="(data, index) in teamJSON.data"
+          :key="index"
+        >
+          {{ data.name }}
+        </option>
+      </select>
+    </div>
+    <div id="selectTeamName2Div">
+      <label for="Team 2">Choose team 2:</label>
+
+      <select name="Team 2" id="Team 2">
+        <option
+          v-for="(data, index) in teamJSON.data"
+          :key="index"
+        >
+          {{ data.name }}
+        </option>
+      </select>
+    </div>
+    <button id="import" @click="onUploadGame">Upload game and team information</button>
+
+    <div class="error_upload_game" v-html="error" />
     <!--<img :src="photo" style='height: 120px'> <br>
     <p>{{name}}</p>
     <p>{{email}}</p>
@@ -25,99 +62,134 @@
 </template>
 
 <script>
-import firebase from 'firebase/compat/app'
-import AuthenticationService from '@/services/AuthenticationService'
-import TeamCreationService from '@/services/TeamCreationService'
-import TeamGetterService from '@/services/TeamGetterService'
-import ConfirmDialogue from '../components/ConfirmDialogue.vue'
-import AlertDialogue from '../components/AlertDialogue.vue'
+import firebase from "firebase/compat/app";
+import AuthenticationService from "@/services/AuthenticationService";
+import TeamCreationService from "@/services/TeamCreationService";
+import TeamGetterService from "@/services/TeamGetterService";
+import ConfirmDialogue from "../components/ConfirmDialogue.vue";
+import AlertDialogue from "../components/AlertDialogue.vue";
+import GameInfoServe from "@/services/GameInfoService";
 
 export default {
- data(){
-     return {
-       photo: '',
-       userId: '',
-       name: '',
-       email: '',
-       user: {},
-       teamJSON: {}
-     }
-   },
-   mounted() {
-     var vm = this
-     var reg = this.register
-     var team = this.getTeams
-     firebase.auth().onAuthStateChanged(function(user) {
-       if (user) {
-         vm.user = user;
-         vm.name = vm.user.displayName;
-         vm.email = vm.user.email;
-         vm.photo = vm.user.photoURL;
-         vm.userId = vm.user.uid;    
-         reg(vm) 
+  data() {
+    return {
+      photo: "",
+      userId: "",
+      name: "",
+      email: "",
+      user: {},
+      teamJSON: {},
+      gameJSON: {},
+    };
+  },
+  mounted() {
+    var vm = this;
+    var reg = this.register;
+    var team = this.getTeams;
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        vm.user = user;
+        vm.name = vm.user.displayName;
+        vm.email = vm.user.email;
+        vm.photo = vm.user.photoURL;
+        vm.userId = vm.user.uid;
+        reg(vm);
       }
     });
 
-    team()
+    team();
   },
-  components: { 
-    ConfirmDialogue, 
-    AlertDialogue
+  components: {
+    ConfirmDialogue,
+    AlertDialogue,
   },
   methods: {
     logOut() {
       firebase.auth().signOut();
     },
     async createTeam() {
-      const val = document.querySelector("input[name=team-name]").value
-      document.querySelector("input[name=team-name]").value = ''
-      try{
+      const val = document.querySelector("input[name=team-name]").value;
+      document.querySelector("input[name=team-name]").value = "";
+      try {
         await TeamCreationService.create({
           name: val,
-          email: firebase.auth().currentUser.email
-        })
+          email: firebase.auth().currentUser.email,
+        });
       } catch (error) {
-        document.querySelector(".error").innerHTML = error.response.data.error
+        document.querySelector(".error").innerHTML = error.response.data.error;
       }
     },
     async register(vm) {
       try {
         await AuthenticationService.register({
-            email: vm.email,
-            name: vm.name
-          });
+          email: vm.email,
+          name: vm.name,
+        });
       } catch (error) {}
     },
     async getTeams() {
       try {
-        this.teamJSON = await TeamGetterService.getAll()
-      } catch (error) {
-
-      }
+        this.teamJSON = await TeamGetterService.getAll();
+      } catch (error) {}
     },
     async clickedTeam(name) {
       const ok = await this.$refs.confirmDialogue.show({
-                title: 'Join ' + name,
-                message: 'Are you sure you want to join team \'' + name + '\'?',
-                okButton: 'Join',
-            })
-            if (ok) {
-                try {
-                  await TeamCreationService.join({
-                    email: firebase.auth().currentUser.email,
-                    name: name
-                  })
-                } catch (error) {
-                  await this.$refs.alertDialogue.show({
-                    title: 'You did not join team ' + name,
-                    message: 'You are already a member of a team',
-                    okButton: 'Okay',
-                  })
-                }
-            } else {
+        title: "Join " + name,
+        message: "Are you sure you want to join team '" + name + "'?",
+        okButton: "Join",
+      });
+      if (ok) {
+        try {
+          await TeamCreationService.join({
+            email: firebase.auth().currentUser.email,
+            name: name,
+          });
+        } catch (error) {
+          await this.$refs.alertDialogue.show({
+            title: "You did not join team " + name,
+            message: "You are already a member of a team",
+            okButton: "Okay",
+          });
+        }
+      } else {
+      }
+    },
+    async onUploadGame() {
+      {
+        const files = document.getElementById("selectFiles").files;
+        if (files.length <= 0) {
+          return false;
+        }
 
-            }
-    }
+        const fr = new FileReader();
+
+        fr.onload = async (e) => {
+          const result = JSON.parse(e.target.result);
+          const formatted = JSON.stringify(result, null, 2);
+          // document.getElementById("result").innerHTML = formatted; // Displays json
+          const team1NameTemp = document.querySelector("#selectTeamName1Div select"); 
+          const team2NameTemp = document.querySelector("#selectTeamName2Div select"); 
+
+          const team1Name = team1NameTemp.selectedOptions[0].innerHTML;
+          const team2Name = team2NameTemp.selectedOptions[0].innerHTML;
+
+          console.log("Team 1:", team1Name);
+          console.log("Team 2:", team2Name);
+
+          try {
+            await GameInfoServe.uploadGame({
+              gameJSON: formatted,
+              team1Name: team1Name,
+              team2Name: team2Name
+            });
+          } catch (error) {
+            document.querySelector(".error_upload_game").innerHTML =
+              error.response.data.error;
+          }
+        };
+        fr.readAsText(files.item(0));
+      }
+    },
   },
 };
 </script>
@@ -126,7 +198,7 @@ export default {
 
 <style scoped>
 .error {
-  color: red
+  color: red;
 }
 
 .team-list {
