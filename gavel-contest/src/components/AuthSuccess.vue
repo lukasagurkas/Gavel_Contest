@@ -29,10 +29,7 @@
       <label for="Team 1">Choose team 1:</label>
 
       <select name="Team 1" id="Team 1">
-        <option
-          v-for="(data, index) in teamJSON.data"
-          :key="index"
-        >
+        <option v-for="(data, index) in teamJSON.data" :key="index">
           {{ data.name }}
         </option>
       </select>
@@ -41,15 +38,14 @@
       <label for="Team 2">Choose team 2:</label>
 
       <select name="Team 2" id="Team 2">
-        <option
-          v-for="(data, index) in teamJSON.data"
-          :key="index"
-          >
+        <option v-for="(data, index) in teamJSON.data" :key="index">
           {{ data.name }}
         </option>
       </select>
     </div>
-    <button id="import" @click="onUploadGame">Upload game and team information</button>
+    <button id="import" @click="onUploadGame">
+      Upload game and team information
+    </button>
 
     <div class="error_upload_game" v-html="error" />
     <!--<img :src="photo" style='height: 120px'> <br>
@@ -62,10 +58,12 @@
     <div id="selectGameDiv">
       <label for="selectGame">Select which game you want to view:</label>
 
-      <select name="selectGame" id="selectGame" v-model="selectedGameVModel">
+      <select name="selectGame" id="selectGame" v-on:change="selectGameId">
+        <option>Select game</option>
         <option
           v-for="(data, index) in gameListJSON.data"
-          :key="index" :value="data.id"
+          :key="index"
+          :value="data.id"
         >
           {{ data.team1Name + " &emsp; | &emsp; " + data.team2Name }}
         </option>
@@ -74,12 +72,10 @@
 
     <button id="import" @click="viewGame">View game</button>
 
+    <button @click="getGame">View Game</button>
     <div>
-      <p hidden id="gameId">
-        {{selectedGameVModel.id}}
-      </p>
+      <p hidden id="gameId"></p>
     </div>
-
   </div>
 </template>
 
@@ -103,7 +99,7 @@ export default {
       user: {},
       teamJSON: {},
       gameJSON: {},
-      gameListJSON: {}
+      gameListJSON: {},
     };
   },
   mounted() {
@@ -121,7 +117,6 @@ export default {
         reg(vm);
       }
     });
-
     team();
     games();
   },
@@ -198,8 +193,12 @@ export default {
           const result = JSON.parse(e.target.result);
           const formatted = JSON.stringify(result, null, 2);
           // document.getElementById("result").innerHTML = formatted; // Displays json
-          const team1NameTemp = document.querySelector("#selectTeamName1Div select"); 
-          const team2NameTemp = document.querySelector("#selectTeamName2Div select"); 
+          const team1NameTemp = document.querySelector(
+            "#selectTeamName1Div select"
+          );
+          const team2NameTemp = document.querySelector(
+            "#selectTeamName2Div select"
+          );
 
           const team1Name = team1NameTemp.selectedOptions[0].innerHTML;
           const team2Name = team2NameTemp.selectedOptions[0].innerHTML;
@@ -211,7 +210,7 @@ export default {
             await GameInfoServe.uploadGame({
               gameJSON: formatted,
               team1Name: team1Name,
-              team2Name: team2Name
+              team2Name: team2Name,
             });
           } catch (error) {
             document.querySelector(".error_upload_game").innerHTML =
@@ -228,9 +227,17 @@ export default {
 
       const gameId = document.querySelector("#gameId").innerHTML;
 
-      console.log(gameName.selectedOptions[0].innerHTML)
-      console.log(gameId)
-    }
+      console.log(gameName.selectedOptions[0].innerHTML);
+      console.log(gameId);
+    },
+    selectGameId(id) {
+      document.querySelector("#gameId").innerHTML =
+        id.target.selectedOptions[0].value;
+    },
+    async getGame() {
+      const id = document.querySelector("#gameId").innerHTML
+      const game = this.gameListJSON.data.filter(function(json) {return (json['id'] == id);})[0].game
+    },
   },
 };
 </script>
