@@ -44,7 +44,7 @@
         <option
           v-for="(data, index) in teamJSON.data"
           :key="index"
-        >
+          >
           {{ data.name }}
         </option>
       </select>
@@ -62,17 +62,23 @@
     <div id="selectGameDiv">
       <label for="selectGame">Select which game you want to view:</label>
 
-      <select name="selectGame" id="selectGame">
+      <select name="selectGame" id="selectGame" v-model="selectedGameVModel">
         <option
           v-for="(data, index) in gameListJSON.data"
-          :key="index"
+          :key="index" :value="data.id"
         >
-          {{ data.team1Name + " " + data.team2Name }}
+          {{ data.team1Name + " &emsp; | &emsp; " + data.team2Name }}
         </option>
       </select>
     </div>
 
     <button id="import" @click="viewGame">View game</button>
+
+    <div>
+      <p hidden id="gameId">
+        {{selectedGameVModel.id}}
+      </p>
+    </div>
 
   </div>
 </template>
@@ -218,7 +224,12 @@ export default {
     async viewGame() {
       const gameName = document.querySelector("#selectGameDiv select");
 
-      console.log(gameName)
+      //const gameId = document.querySelector("#selectGameDiv option:checked").value;
+
+      const gameId = document.querySelector("#gameId").innerHTML;
+
+      console.log(gameName.selectedOptions[0].innerHTML)
+      console.log(gameId)
     }
   },
 };
