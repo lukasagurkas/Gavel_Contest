@@ -88,6 +88,7 @@ import ConfirmDialogue from "../components/ConfirmDialogue.vue";
 import AlertDialogue from "../components/AlertDialogue.vue";
 import GameInfoServe from "@/services/GameInfoService";
 import GameGetterService from "@/services/GameGetterService";
+import GameSenderService from "@/services/GameSenderService"
 
 export default {
   data() {
@@ -237,7 +238,8 @@ export default {
     async getGame() {
       const id = document.querySelector("#gameId").innerHTML
       const game = this.gameListJSON.data.filter(function(json) {return (json['id'] == id);})[0].game
-    },
+      await GameSenderService.sendGame(game)
+    }
   },
 };
 </script>
