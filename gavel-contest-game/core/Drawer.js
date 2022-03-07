@@ -1,5 +1,5 @@
 import { assets } from '../assets.js'
-import * as config from '../../gavel-contest-game/config.js'
+import * as config from '../config.js'
 import { unlerp, fitAspectRatio } from './utils.js'
 import { WIDTH, HEIGHT, BASE_FRAME_DURATION } from './constants.js'
 import { ErrorLog } from './ErrorLog.js'

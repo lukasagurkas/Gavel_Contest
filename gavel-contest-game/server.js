@@ -26,7 +26,12 @@ const server = http.createServer(function(req, res) {
             console.log(`File not found ${file}`)
             res.writeHead(404)
             res.end()
-        } else {
+        } else if (path == "config.js") {
+            res.setHeader("X-Content-Type-Options", "nosniff")
+            res.writeHead(200, {"Content-type": "application/javascript"})
+        } 
+        
+        else {
             console.log(path)
             let mime = lookup(path)
             res.setHeader("X-Content-Type-Options", "nosniff")

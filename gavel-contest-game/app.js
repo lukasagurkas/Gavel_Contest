@@ -1,4 +1,4 @@
-// import * as config from '../config.js'
+//import * as config from '/config.js'
 import './lib/cginput.js'
 import './player.js'
 
@@ -57,7 +57,7 @@ function PlayerCtrl ($scope, $timeout, $interval, $element) {
 
   async function init () {
     cgPlayer = createCGPlayer({
-      viewerUrl: '../gavel-contest-game/core/Drawer.js'
+      viewerUrl: './core/Drawer.js'
     })
     cgPlayer.on('parsedGameInfo', onParsedGameInfo)
     cgPlayer.createIframe($element.find('.cg-player-sandbox')[0])
