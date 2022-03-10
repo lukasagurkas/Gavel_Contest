@@ -16,7 +16,7 @@ new Vue({
     firebase.initializeApp(firebaseConfig);
     firebase.auth().onAuthStateChanged((user) => {
       if(user) {
-        self.$router.push('/success')
+        self.$router.push('/verifyEmail')
       } else {
         self.$router.push('/auth')
       }

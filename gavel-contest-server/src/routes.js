@@ -4,6 +4,8 @@ const TeamCreationControllerPolicy = require('./policies/TeamCreationControllerP
 const TeamGetterController = require('./controllers/TeamGetterController')
 const GameUploadController = require('./controllers/GameUploadController.js')
 const GameGetterController = require('./controllers/GameGetterController.js')
+const UserGetterController = require('./controllers/UserGetterController.js')
+const UserUpdateEmailController = require('./controllers/UserUpdateEmailController.js')
 
 module.exports = (app) => {
     app.post('/register',
@@ -24,4 +26,10 @@ module.exports = (app) => {
 
     app.get('/getAllGames',
         GameGetterController.getAll)
+
+    app.get('/getUser',
+        UserGetterController.getUser)
+
+    app.post('/updateUserEmail',
+        UserUpdateEmailController.updateUserEmail)
 }
