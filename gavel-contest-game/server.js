@@ -32,6 +32,10 @@ const server = http.createServer(function (req, res) {
         if (path == "") {
             path = "test.html"
         }
+        if (path.includes("?game=")) {
+            path = path.slice(0, path.lastIndexOf('?'))
+        }
+        
         path = path.replace(/\//g, "\\")
         let file = __dirname + "\\" + path
         fs.readFile(file, function (err, content) {

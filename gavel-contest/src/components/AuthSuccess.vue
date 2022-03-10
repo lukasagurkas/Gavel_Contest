@@ -60,13 +60,17 @@
 
       <select name="selectGame" id="selectGame" v-on:change="selectGameId">
         <option>Select game</option>
-        <option
+        <!-- <option
           v-for="(data, index) in gameListJSON.data"
           :key="index"
           :value="data.id"
         >
           {{ data.team1Name + " &emsp; | &emsp; " + data.team2Name }}
-        </option>
+        </option> -->
+        <option v-for="(data, index) in gameList.data"
+          :key="index"
+          :value="data.id"
+        ></option>
       </select>
     </div>
 
@@ -76,6 +80,7 @@
     <div>
       <p hidden id="gameId"></p>
     </div>
+    <a id="gameViewerLink" href="#" @click="getGameName()" target="_blank">View Game</a>
   </div>
 </template>
 
@@ -101,6 +106,7 @@ export default {
       teamJSON: {},
       gameJSON: {},
       gameListJSON: {},
+      gameList: ""
     };
   },
   mounted() {
@@ -108,6 +114,7 @@ export default {
     var reg = this.register;
     var team = this.getTeams;
     var games = this.getGames;
+    var gamelist = this.getGameList;
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         vm.user = user;
@@ -120,6 +127,7 @@ export default {
     });
     team();
     games();
+    gamelist();
   },
   components: {
     ConfirmDialogue,
@@ -239,7 +247,13 @@ export default {
       const id = document.querySelector("#gameId").innerHTML
       const game = this.gameListJSON.data.filter(function(json) {return (json['id'] == id);})[0].game
       await GameSenderService.sendGame(game)
-    }
+    },
+    getGameName() {
+      var link = document.querySelector("#gameViewerLink");
+      console.log("localhost:8000/?game=" + document.querySelector("#selectGameDiv select").selectedOptions[0].innerHTML)
+      link.setAttribute("href", "localhost:8000/?game=" + document.querySelector("#selectGameDiv select").selectedOptions[0].innerHTML);
+      return false;
+    },
   },
 };
 </script>
