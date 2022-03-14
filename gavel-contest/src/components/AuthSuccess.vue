@@ -6,7 +6,7 @@
     <input name="team-name" type="name" placeholder="Enter Team Name" />
     <button @click="createTeam">Create new team</button>
     <br />
-    <div class="error" v-html="error" />
+    <div class="error"/>
     <br />
     <div>
       <ul class="team-list">
@@ -22,8 +22,8 @@
         <alert-dialogue ref="alertDialogue"></alert-dialogue>
       </ul>
     </div>
-    <input type="file" id="selectFiles" value="Import" accept=".json" /><br />
-    <!--for displaying json <pre id="result"></pre>-->
+    <!-- <input type="file" id="selectFiles" value="Import" accept=".json" /><br />
+    for displaying json <pre id="result"></pre>
 
     <div id="selectTeamName1Div">
       <label for="Team 1">Choose team 1:</label>
@@ -47,7 +47,7 @@
       Upload game and team information
     </button>
 
-    <div class="error_upload_game" v-html="error" />
+    <div class="error_upload_game"/> -->
     <!--<img :src="photo" style='height: 120px'> <br>
     <p>{{name}}</p>
     <p>{{email}}</p>
@@ -58,8 +58,7 @@
     <div id="selectGameDiv">
       <label for="selectGame">Select which game you want to view:</label>
 
-      <select name="selectGame" id="selectGame" v-on:change="selectGameId">
-        <option>Select game</option>
+      <select name="selectGame" id="selectGame">
         <!-- <option
           v-for="(data, index) in gameListJSON.data"
           :key="index"
@@ -67,20 +66,25 @@
         >
           {{ data.team1Name + " &emsp; | &emsp; " + data.team2Name }}
         </option> -->
-        <option v-for="(data, index) in gameList.data"
+        <option v-for="(data, index) in gameList"
           :key="index"
-          :value="data.id"
-        ></option>
+        >{{data}}</option>
       </select>
     </div>
 
-    <button id="import" @click="viewGame">View game</button>
+    <!-- <button id="import" @click="viewGame">View game</button>
 
     <button @click="getGame">View Game</button>
     <div>
       <p hidden id="gameId"></p>
-    </div>
+    </div> -->
     <a id="gameViewerLink" href="#" @click="getGameName()" target="_blank">View Game</a>
+    <br/>
+    <input type="file" id="selectFiles" value="Import" accept=".json" @change="onFileChange"/>
+    <br />
+    <button id="import" @click="onUploadFile" :disabled="!this.selectedFile">
+      Upload source code
+    </button>
   </div>
 </template>
 
@@ -94,6 +98,8 @@ import AlertDialogue from "../components/AlertDialogue.vue";
 import GameInfoServe from "@/services/GameInfoService";
 import GameGetterService from "@/services/GameGetterService";
 import GameSenderService from "@/services/GameSenderService"
+import GameListGetterService from "@/services/GameListGetterService"
+import SourceCodeUploadService from "@/services/SourceCodeUploadService"
 
 export default {
   data() {
@@ -106,7 +112,8 @@ export default {
       teamJSON: {},
       gameJSON: {},
       gameListJSON: {},
-      gameList: ""
+      gameList: "",
+      selectedFile: ""
     };
   },
   mounted() {
@@ -189,71 +196,97 @@ export default {
       } else {
       }
     },
-    async onUploadGame() {
-      {
-        const files = document.getElementById("selectFiles").files;
-        if (files.length <= 0) {
-          return false;
-        }
+    // async onUploadGame() {
+    //   {
+    //     const files = document.getElementById("selectFiles").files;
+    //     if (files.length <= 0) {
+    //       return false;
+    //     }
 
-        const fr = new FileReader();
+    //     const fr = new FileReader();
 
-        fr.onload = async (e) => {
-          const result = JSON.parse(e.target.result);
-          const formatted = JSON.stringify(result, null, 2);
-          // document.getElementById("result").innerHTML = formatted; // Displays json
-          const team1NameTemp = document.querySelector(
-            "#selectTeamName1Div select"
-          );
-          const team2NameTemp = document.querySelector(
-            "#selectTeamName2Div select"
-          );
+    //     fr.onload = async (e) => {
+    //       const result = JSON.parse(e.target.result);
+    //       const formatted = JSON.stringify(result, null, 2);
+    //       // document.getElementById("result").innerHTML = formatted; // Displays json
+    //       // const team1NameTemp = document.querySelector(
+    //       //   "#selectTeamName1Div select"
+    //       // );
+    //       // const team2NameTemp = document.querySelector(
+    //       //   "#selectTeamName2Div select"
+    //       // );
 
-          const team1Name = team1NameTemp.selectedOptions[0].innerHTML;
-          const team2Name = team2NameTemp.selectedOptions[0].innerHTML;
+    //       // const team1Name = team1NameTemp.selectedOptions[0].innerHTML;
+    //       // const team2Name = team2NameTemp.selectedOptions[0].innerHTML;
 
-          console.log("Team 1:", team1Name);
-          console.log("Team 2:", team2Name);
+    //       // console.log("Team 1:", team1Name);
+    //       // console.log("Team 2:", team2Name);
 
-          try {
-            await GameInfoServe.uploadGame({
-              gameJSON: formatted,
-              team1Name: team1Name,
-              team2Name: team2Name,
-            });
-          } catch (error) {
-            document.querySelector(".error_upload_game").innerHTML =
-              error.response.data.error;
-          }
-        };
-        fr.readAsText(files.item(0));
-      }
+    //       try {
+    //         await GameInfoServe.uploadGame({
+    //           gameJSON: formatted,
+    //           team1Name: team1Name,
+    //           team2Name: team2Name,
+    //         });
+    //       } catch (error) {
+    //         document.querySelector(".error_upload_game").innerHTML =
+    //           error.response.data.error;
+    //       }
+    //     };
+    //     fr.readAsText(files.item(0));
+    //   }
+    // },
+    onFileChange(e) {
+      const selectedFile = e.target.files[0]; // accessing file      
+      this.selectedFile = selectedFile;
+      console.log(this.selectedFile)
     },
-    async viewGame() {
-      const gameName = document.querySelector("#selectGameDiv select");
-
-      //const gameId = document.querySelector("#selectGameDiv option:checked").value;
-
-      const gameId = document.querySelector("#gameId").innerHTML;
-
-      console.log(gameName.selectedOptions[0].innerHTML);
-      console.log(gameId);
+    async onUploadFile() {
+      const formData = new FormData();
+      console.log(this.selectedFile)
+      formData.append("file", this.selectedFile);  // appending file
+     for (var pair of formData.entries()) {
+       console.log(pair[0], pair[1])
+     }
+      await SourceCodeUploadService.uploadFile({
+        content: formData,
+        email: firebase.auth().currentUser.email
+      })
     },
-    selectGameId(id) {
-      document.querySelector("#gameId").innerHTML =
-        id.target.selectedOptions[0].value;
-    },
-    async getGame() {
-      const id = document.querySelector("#gameId").innerHTML
-      const game = this.gameListJSON.data.filter(function(json) {return (json['id'] == id);})[0].game
-      await GameSenderService.sendGame(game)
-    },
+    // async viewGame() {
+    //   const gameName = document.querySelector("#selectGameDiv select");
+
+    //   //const gameId = document.querySelector("#selectGameDiv option:checked").value;
+
+    //   const gameId = document.querySelector("#gameId").innerHTML;
+
+    //   console.log(gameName.selectedOptions[0].innerHTML);
+    //   console.log(gameId);
+    // },
+    // selectGameId(id) {
+    //   document.querySelector("#gameId").innerHTML =
+    //     id.target.selectedOptions[0].value;
+    // },
+    // async getGame() {
+    //   const id = document.querySelector("#gameId").innerHTML
+    //   const game = this.gameListJSON.data.filter(function(json) {return (json['id'] == id);})[0].game
+    //   await GameSenderService.sendGame(game)
+    // },
     getGameName() {
       var link = document.querySelector("#gameViewerLink");
-      console.log("localhost:8000/?game=" + document.querySelector("#selectGameDiv select").selectedOptions[0].innerHTML)
-      link.setAttribute("href", "localhost:8000/?game=" + document.querySelector("#selectGameDiv select").selectedOptions[0].innerHTML);
+    //  console.log("localhost:8000/?game=" + document.querySelector("#selectGameDiv select").selectedOptions[0].innerHTML)
+      link.setAttribute("href", "http://localhost:8000/?game=" + document.querySelector("#selectGameDiv select").selectedOptions[0].innerHTML);
       return false;
     },
+    async getGameList() {
+      let rawGames = await GameListGetterService.getGames()
+      const gameNames = []
+      rawGames = rawGames.data
+      for (let i = 0; i < rawGames.length; i++) {
+        gameNames.push(rawGames[i].slice(0, rawGames[i].lastIndexOf('.')))
+      }
+      this.gameList = gameNames
+    }
   },
 };
 </script>

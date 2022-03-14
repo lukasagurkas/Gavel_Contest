@@ -6,6 +6,8 @@ const GameUploadController = require('./controllers/GameUploadController.js')
 const GameGetterController = require('./controllers/GameGetterController.js')
 const UserGetterController = require('./controllers/UserGetterController.js')
 const UserUpdateEmailController = require('./controllers/UserUpdateEmailController.js')
+const GameListGetterController = require('./controllers/GameListGetterController.js')
+const SourceCodeUploadController = require('./controllers/SourceCodeUploadController.js')
 
 module.exports = (app) => {
     app.post('/register',
@@ -32,4 +34,10 @@ module.exports = (app) => {
 
     app.post('/updateUserEmail',
         UserUpdateEmailController.updateUserEmail)
+
+    app.get('/getGamesList',
+        GameListGetterController.getGamesList)
+
+    app.post('/uploadFile',
+        SourceCodeUploadController.uploadFile)
 }

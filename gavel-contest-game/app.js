@@ -87,8 +87,9 @@ function PlayerCtrl ($scope, $timeout, $interval, $element) {
   }
 
   async function loadGame () {
+    console.log("hello")
     const game = "games\\" + new URLSearchParams(window.location.search).get("game").replace(" ", "_") + ".json"
-    console.log(game)
+    
     const response = await fetch(game)
     ctrl.data = await response.json()
     if (!ctrl.data) {

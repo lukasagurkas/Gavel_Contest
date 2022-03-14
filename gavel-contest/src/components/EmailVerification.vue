@@ -8,12 +8,12 @@
     <div>
       <button @click="resendVerificationEmail">Resend</button>
       <button @click="emailVerified">Continue</button>
-      <div class="error" v-html="error" />
+      <div class="error"/>
     </div>
     <div>
       <input name="new-email" type="email" placeholder="Enter new email" />
       <button @click="setNewEmail">Set new email address</button>
-			<div class="errorSettingNewEmail" v-html="error" />
+			<div class="errorSettingNewEmail"/>
     </div>
     <button @click="logOut">Log out</button>
   </div>

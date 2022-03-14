@@ -10,7 +10,6 @@ const fs = require("fs");
 const lookup = require("mime-types").lookup
 
 const server = http.createServer(function (req, res) {
-
     res.setHeader("Content-type", "application/json")
     res.setHeader("Access-Control-Allow-Origin", "*")
 
@@ -29,15 +28,19 @@ const server = http.createServer(function (req, res) {
     } else if (req.method.toLowerCase() == 'get') {
         let parsedURL = url.parse(req.url, true)
         let path = parsedURL.path.replace(/^\/+|\/+$/g, "")
-        if (path == "") {
-            path = "test.html"
-        }
+        
         if (path.includes("?game=")) {
             path = path.slice(0, path.lastIndexOf('?'))
+        }
+
+        if (path == "") {
+            path = "test.html"
         }
         
         path = path.replace(/\//g, "\\")
         let file = __dirname + "\\" + path
+        // console.log(file)
+        // console.log(path)
         fs.readFile(file, function (err, content) {
             if (err) {
                 console.log(`File not found ${file}`)
