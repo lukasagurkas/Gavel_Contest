@@ -3,8 +3,8 @@
         <h2 style="margin-top: 0">{{ title }}</h2>
         <p>{{ message }}</p>
         <div class="btns">
-            <button class="cancel-btn" @click="_cancel">{{ cancelButton }}</button>
-            <span class="ok-btn" @click="_confirm">{{ okButton }}</span>
+            <v-btn class="cancel-btn" @click="_cancel">{{ cancelButton }}</v-btn>
+            <v-btn class="ok-btn" @click="_confirm">{{ okButton }}</v-btn>
         </div>
     </popup-modal>
 </template>
@@ -66,29 +66,5 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-}
-
-.ok-btn {
-    padding: 0.5em 1em;
-    background-color: #e2df0d;
-    color: #ffffff;
-    border: 2px solid #1a0ec5;
-    border-radius: 5px;
-    font-weight: bold;
-    font-size: 16px;
-    text-transform: uppercase;
-    cursor: pointer;
-}
-
-.cancel-btn {
-    padding: 0.5em 1em;
-    background-color: #e2df0d;
-    color: #ffffff;
-    border: 2px solid #1a0ec5;
-    border-radius: 5px;
-    font-weight: bold;
-    font-size: 16px;
-    text-transform: uppercase;
-    cursor: pointer;
 }
 </style>

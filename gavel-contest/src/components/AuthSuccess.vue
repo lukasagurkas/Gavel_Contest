@@ -1,26 +1,25 @@
 <template>
   <div>
     <h1>Signup succeeded</h1>
-    <button @click="logOut">Log out</button>
+    <v-btn @click="logOut">Log out</v-btn>
     <hr />
     <input name="team-name" type="name" placeholder="Enter Team Name" />
-    <button @click="createTeam">Create new team</button>
+    <v-btn @click="createTeam">Create new team</v-btn>
     <br />
     <div class="error"/>
     <br />
     <div>
-      <ul class="team-list">
-        <li
+        <v-list
           class="team-name"
           @click="clickedTeam(data.name)"
           v-for="(data, index) in teamJSON.data"
           :key="index"
         >
           {{ data.name }}
-        </li>
+        </v-list>
+
         <confirm-dialogue ref="confirmDialogue"></confirm-dialogue>
         <alert-dialogue ref="alertDialogue"></alert-dialogue>
-      </ul>
     </div>
     <!-- <input type="file" id="selectFiles" value="Import" accept=".json" /><br />
     for displaying json <pre id="result"></pre>
@@ -43,9 +42,9 @@
         </option>
       </select>
     </div>
-    <button id="import" @click="onUploadGame">
+    <v-btn id="import" @click="onUploadGame">
       Upload game and team information
-    </button>
+    </v-btn>
 
     <div class="error_upload_game"/> -->
     <!--<img :src="photo" style='height: 120px'> <br>
@@ -74,7 +73,7 @@
 
     <!-- <button id="import" @click="viewGame">View game</button>
 
-    <button @click="getGame">View Game</button>
+    <v-btn @click="getGame">View Game</v-btn>
     <div>
       <p hidden id="gameId"></p>
     </div> -->
@@ -275,7 +274,7 @@ export default {
     getGameName() {
       var link = document.querySelector("#gameViewerLink");
     //  console.log("localhost:8000/?game=" + document.querySelector("#selectGameDiv select").selectedOptions[0].innerHTML)
-      link.setAttribute("href", "http://localhost:8000/?game=" + document.querySelector("#selectGameDiv select").selectedOptions[0].innerHTML);
+      link.setAttribute("href", "http://localhost:8000/?game=" + document.querySelector(".selectGameDiv select").selectedOptions[0].innerHTML);
       return false;
     },
     async getGameList() {

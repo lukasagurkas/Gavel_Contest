@@ -5,12 +5,14 @@ import firebase from 'firebase/compat/app'
 import router from './router'
 import VuejsDialog from "vuejs-dialog"
 import { firebaseConfig } from './helpers/firebase.config'
+import vuetify from './plugins/vuetify'
 
 Vue.use(VueRouter)
 Vue.use(VuejsDialog)
 
 new Vue({
   router,
+
   created() {
     let self = this;
     firebase.initializeApp(firebaseConfig);
@@ -22,6 +24,8 @@ new Vue({
       }
      });
     },
+
   el: '#app',
+  vuetify,
   render: h => h(App)
 });
