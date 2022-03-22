@@ -40,4 +40,7 @@ module.exports = (app) => {
 
     app.post('/uploadFile',
         SourceCodeUploadController.uploadFile)
+
+    app.post('/getUserTeam',
+        TeamGetterController.getUserTeam)
 }

@@ -113,6 +113,7 @@ export default {
       gameJSON: {},
       gameListJSON: {},
       gameList: "",
+      gameNameList: "",
       selectedFile: ""
     };
   },
@@ -274,18 +275,43 @@ export default {
     // },
     getGameName() {
       var link = document.querySelector("#gameViewerLink");
+      const index = this.gameList.indexOf(document.querySelector("#selectGameDiv select").selectedOptions[0].innerHTML)
     //  console.log("localhost:8000/?game=" + document.querySelector("#selectGameDiv select").selectedOptions[0].innerHTML)
-      link.setAttribute("href", "http://localhost:8000/?game=" + document.querySelector("#selectGameDiv select").selectedOptions[0].innerHTML);
+      link.setAttribute("href", "http://localhost:8000/?game=" + this.gameNameList[index]);
       return false;
     },
     async getGameList() {
       let rawGames = await GameListGetterService.getGames()
-      const gameNames = []
+      let gameNames = []
+      let displayNames = []
+
       rawGames = rawGames.data
+      const email = firebase.auth().currentUser.email
+      let teamName = ''
+      await this.getUserTeam(email).then(result => result.data).then(data => {teamName = data.replace(" ", "_")})   
+
       for (let i = 0; i < rawGames.length; i++) {
-        gameNames.push(rawGames[i].slice(0, rawGames[i].lastIndexOf('.')))
+        if (rawGames[i].indexOf("-" + teamName) !== -1 && rawGames[i].indexOf("-T2") !== -1) { // user in second team, team 2 specific
+          gameNames.push(rawGames[i].slice(0, rawGames[i].lastIndexOf('.')))
+          displayNames.push(rawGames[i].slice(0, rawGames[i].lastIndexOf('-T2')).replace("_", " ") + " (Team specific)")
+        } else if (rawGames[i].indexOf("-" + teamName) === -1 && // user in first team, team 1 specific
+                   rawGames[i].indexOf(teamName) !== -1 &&
+                   rawGames[i].indexOf("-T1") !== -1) { 
+          gameNames.push(rawGames[i].slice(0, rawGames[i].lastIndexOf('.')))
+          displayNames.push(rawGames[i].slice(0, rawGames[i].lastIndexOf('-T1')).replace("_", " ") + " (Team specific)")
+        } else if ((rawGames[i].indexOf("-G") !== -1)) { // general game
+          gameNames.push(rawGames[i].slice(0, rawGames[i].lastIndexOf('.')))
+          displayNames.push(rawGames[i].slice(0, rawGames[i].lastIndexOf('-G')).replace("_", " "))
+        }
+        
       }
-      this.gameList = gameNames
+      this.gameList = displayNames
+      this.gameNameList = gameNames
+    },
+    async getUserTeam(email) {
+      return await TeamGetterService.getUserTeam({
+        email: email
+      })
     }
   },
 };
