@@ -22,6 +22,7 @@
 <script>
 import firebase from "firebase/compat/app";
 import router from "../router";
+import AuthenticationService from "@/services/AuthenticationService";
 
 export default {
 	data() {
@@ -32,16 +33,26 @@ export default {
   },
   mounted() {
 		var vm = this;
+    var reg = this.register;
     firebase.auth().onAuthStateChanged(function (user) {
 			vm.email = user.email;
       if (user.emailVerified) {
-        router.push("/success");
+        reg(vm);
+        router.push("/teams");
       }
     });
   },
   methods: {
     logOut() {
       firebase.auth().signOut();
+    },
+    async register(vm) {
+      try {
+        await AuthenticationService.register({
+          email: vm.email,
+          name: vm.name,
+        });
+      } catch (error) {}
     },
     async resendVerificationEmail() {
       firebase
@@ -58,7 +69,7 @@ export default {
       const user = firebase.auth().currentUser;
 			console.log(user.emailVerified)
       if (user.emailVerified) {
-        router.push("/success");
+        router.push("/teams");
       } else {
         document.querySelector(".error").innerHTML =
           "Email was not verified or try reloading the page";

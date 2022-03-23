@@ -46,4 +46,7 @@ module.exports = (app) => {
 
     app.post('/getPassword',
         TeamGetterController.getPassword)
+        
+    app.post('/getUserInTeam',
+        TeamGetterController.getUserInTeam)
 }

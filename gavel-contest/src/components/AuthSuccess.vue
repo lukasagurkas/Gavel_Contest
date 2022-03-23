@@ -6,7 +6,7 @@
     <input name="team-name" type="name" placeholder="Enter Team Name" />
     <button @click="createTeam">Create new team</button>
     <br />
-    <div class="error"/>
+    <div class="error" />
     <br />
     <div>
       <ul class="team-list">
@@ -56,7 +56,7 @@
     <!--<img :src="photo" style='height: 120px'> <br>
     <p>{{name}}</p>
     <p>{{email}}</p>
-    <p>{{userId}}</p>
+    <p>{{userID}}</p>
     <hr>
     <pre>{{user}}</pre>-->
 
@@ -71,9 +71,9 @@
         >
           {{ data.team1Name + " &emsp; | &emsp; " + data.team2Name }}
         </option> -->
-        <option v-for="(data, index) in gameList"
-          :key="index"
-        >{{data}}</option>
+        <option v-for="(data, index) in gameList" :key="index">
+          {{ data }}
+        </option>
       </select>
     </div>
 
@@ -83,13 +83,20 @@
     <div>
       <p hidden id="gameId"></p>
     </div> -->
-    <a id="gameViewerLink" href="#" @click="getGameName()" target="_blank">View Game</a>
-    <br/>
-    <input type="file" id="selectFiles" value="Import" accept=".json" @change="onFileChange"/>
+    <a id="gameViewerLink" href="#" @click="getGameName()" target="_blank"
+      >View Game</a
+    >
     <br />
-    <button id="import" @click="onUploadFile" :disabled="!this.selectedFile">
-      Upload source code
-    </button>
+    <div class="file-upload">
+      <input type="file" @change="onFileChange" />
+      <button
+        @click="onUploadFile"
+        class="upload-button"
+        :disabled="!this.selectedFile"
+      >
+        Upload file
+      </button>
+    </div>
   </div>
 </template>
 
@@ -100,19 +107,18 @@ import TeamCreationService from "@/services/TeamCreationService";
 import TeamGetterService from "@/services/TeamGetterService";
 import ConfirmDialogue from "../components/ConfirmDialogue.vue";
 import AlertDialogue from "../components/AlertDialogue.vue";
-import GameInfoServe from "@/services/GameInfoService";
 import GameGetterService from "@/services/GameGetterService";
-import GameSenderService from "@/services/GameSenderService"
-import GameListGetterService from "@/services/GameListGetterService"
-import SourceCodeUploadService from "@/services/SourceCodeUploadService"
+import GameListGetterService from "@/services/GameListGetterService";
+import axios from "axios";
 
 export default {
   data() {
     return {
       photo: "",
-      userId: "",
+      userID: "",
       name: "",
       email: "",
+      teamName: "",
       user: {},
       teamJSON: {},
       gameJSON: {},
@@ -128,14 +134,16 @@ export default {
     var team = this.getTeams;
     var games = this.getGames;
     var gamelist = this.getGameList;
+    var getTeamName = this.getUserTeamName;
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         vm.user = user;
         vm.name = vm.user.displayName;
         vm.email = vm.user.email;
         vm.photo = vm.user.photoURL;
-        vm.userId = vm.user.uid;
+        vm.userID = vm.user.uid;
         reg(vm);
+        getTeamName(vm);
       }
     });
     team();
@@ -149,6 +157,9 @@ export default {
   methods: {
     logOut() {
       firebase.auth().signOut();
+    },
+    async getUserTeamName(vm) {
+      this.teamName = await this.getUserTeam(vm.email).then(result => result.data)
     },
     async createTeam() {
       const val = document.querySelector("input[name=team-name]").value;
@@ -243,21 +254,23 @@ export default {
     //   }
     // },
     onFileChange(e) {
-      const selectedFile = e.target.files[0]; // accessing file      
+      const selectedFile = e.target.files[0]; // accessing file
       this.selectedFile = selectedFile;
-      console.log(this.selectedFile)
     },
-    async onUploadFile() {
+    onUploadFile() {
       const formData = new FormData();
-      console.log(this.selectedFile)
-      formData.append("file", this.selectedFile);  // appending file
-     for (var pair of formData.entries()) {
-       console.log(pair[0], pair[1])
-     }
-      await SourceCodeUploadService.uploadFile({
-        content: formData,
-        email: firebase.auth().currentUser.email
-      })
+      formData.append("file", this.selectedFile); // appending file
+      formData.append("teamName", this.teamName);
+
+      // sending file to the backend
+      axios
+        .post("http://localhost:8081/uploadFile", formData)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     // async viewGame() {
     //   const gameName = document.querySelector("#selectGameDiv select");

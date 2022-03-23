@@ -11,5 +11,9 @@ export default {
 
     getPassword (email) {
         return Api().post('getPassword', email)
+    },
+    
+    getUserInTeam (email) {
+        return Api().post('getUserInTeam', email)
     }
 }
