@@ -26,6 +26,12 @@ db['user'] = User
 const Team = sequelize.define('team', {
     name: {
         type: Sequelize.DataTypes.STRING
+    },
+    password: {
+        type: Sequelize.DataTypes.STRING,
+        set(value){
+            this.setDataValue('password', value)
+        }
     }
 })
 

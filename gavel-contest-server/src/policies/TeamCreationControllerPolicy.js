@@ -2,7 +2,7 @@ const Joi = require('joi')
 
 module.exports = {
     create(req, res, next) {
-        const schema = Joi.string().min(3).max(30).required().pattern(new RegExp('^[a-zA-Z][a-zA-Z0-9 ]+$'))
+        const schema = Joi.string().min(3).max(30).required().pattern(new RegExp('^[a-zA-Z][a-zA-Z0-9 \']+$'))
 
         const {error, value} = schema.validate(req.body.name)
 

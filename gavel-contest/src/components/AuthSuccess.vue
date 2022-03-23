@@ -22,6 +22,11 @@
         <alert-dialogue ref="alertDialogue"></alert-dialogue>
       </ul>
     </div>
+    <br/>
+    <div>
+      <button @click="showTeamPassword">Get Team Password</button>
+      <p id="teamPasswordField"></p>
+    </div>
     <!-- <input type="file" id="selectFiles" value="Import" accept=".json" /><br />
     for displaying json <pre id="result"></pre>
 
@@ -312,6 +317,17 @@ export default {
       return await TeamGetterService.getUserTeam({
         email: email
       })
+    },
+    async showTeamPassword() {
+      let password = ''
+      await TeamGetterService.getPassword({
+        email: firebase.auth().currentUser.email
+      }).then(result => result.data).then(data => {password = data})   
+
+      document.querySelector("#teamPasswordField").innerHTML = password
+      await new Promise(resolve => setTimeout(resolve, 5000)); 
+      document.querySelector("#teamPasswordField").innerHTML = ''
+      
     }
   },
 };

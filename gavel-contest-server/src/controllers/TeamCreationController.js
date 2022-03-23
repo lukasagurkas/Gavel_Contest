@@ -19,7 +19,13 @@ module.exports = {
             })
         } else {
             try {
-                await db.team.create({name:req.body.name})
+                const random = (length = 8) => {
+                    return Math.random().toString(16).substr(2, length);
+                };
+                await db.team.create({
+                    name:req.body.name,
+                    password: random(14)
+                })
     
                 const teamId = await db.team.findOne({
                     where: {name:req.body.name}})

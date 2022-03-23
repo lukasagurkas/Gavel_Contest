@@ -36,5 +36,27 @@ module.exports = {
         }
 
         res.json(teamName)
+    },
+
+    async getPassword(req, res) {
+        const userId = await db.user.findOne({
+            where: {email:req.body.email}})
+            .then(function(user){
+                return user.dataValues.id
+        })
+        
+        const teamId = await db.userteam.findOne({
+            where: {userId: userId}})
+            .then(function(userteam) {
+                return userteam.dataValues.teamID
+            })
+
+        let password = await db.team.findOne({
+            where: {id: teamId}})
+            .then(function(team) {
+                return team.dataValues.password
+            })
+
+        res.json(password)
     }
 }
