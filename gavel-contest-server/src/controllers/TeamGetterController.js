@@ -42,6 +42,12 @@ module.exports = {
     async getUserInTeam(req, res) {
         var bool = false
 
+        const userId = await db.user.findOne({
+            where: {email:req.body.email}})
+            .then(function(user){
+                return user.dataValues.id
+            })
+
         if (await db.userteam.findOne({where: {userId: userId}}) == null) {
             bool = false;
         } else {
