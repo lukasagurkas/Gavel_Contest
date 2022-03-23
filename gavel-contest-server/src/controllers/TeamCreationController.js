@@ -3,13 +3,13 @@ const db = require('../models')
 
 module.exports = {
     async create (req, res) {
-        const userId = await db.user.findOne({
+        const userID = await db.user.findOne({
             where: {email:req.body.email}})
             .then(function(user){
                 return user.dataValues.id
         })
 
-        if (await db.userteam.findOne({where: {userID:userId}}) != null) {
+        if (await db.userteam.findOne({where: {userID:userID}}) != null) {
             res.status(400).send({
                 error: "User already has team"
             })
@@ -33,7 +33,7 @@ module.exports = {
                         return team.dataValues.id
                 })
     
-                await db.userteam.create({userID: userId, teamID: teamId})
+                await db.userteam.create({userID: userID, teamID: teamId})
                 
             } catch (err) {
                 res.status(400).send({
@@ -46,13 +46,13 @@ module.exports = {
     }, 
 
     async join(req, res) {
-        const userId = await db.user.findOne({
+        const userID = await db.user.findOne({
             where: {email:req.body.email}})
             .then(function(user){
                 return user.dataValues.id
         })
 
-        if (await db.userteam.findOne({where: {userID:userId}}) != null) {
+        if (await db.userteam.findOne({where: {userID:userID}}) != null) {
             res.status(400).send({
                 error: "User already has team"
             })
@@ -64,7 +64,7 @@ module.exports = {
                         return team.dataValues.id
                 })
 
-                await db.userteam.create({userID: userId, teamID: teamId})
+                await db.userteam.create({userID: userID, teamID: teamId})
             } catch (error) {
                 res.status(400).send({
                     error: err
