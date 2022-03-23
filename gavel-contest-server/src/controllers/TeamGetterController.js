@@ -40,22 +40,23 @@ module.exports = {
 
     
     async getUserInTeam(req, res) {
+        var bool = false
+
+        if (await db.userteam.findOne({where: {userId: userId}}) == null) {
+            bool = false;
+        } else {
+            bool = true;
+        }
+
+        res.json(bool)
+    },
+    async getPassword(req, res) {
         const userId = await db.user.findOne({
             where: {email:req.body.email}})
             .then(function(user){
-                return user.dataValues.id})
-                
-            var bool = false
+                return user.dataValues.id
+            })
 
-            if (await db.userteam.findOne({where: {userId: userId}}) == null) {
-                bool = false;
-            } else {
-                bool = true;
-            }
-
-            res.json(bool)
-        },
-    async getPassword(req, res) {
         const teamId = await db.userteam.findOne({
             where: {userId: userId}})
             .then(function(userteam) {

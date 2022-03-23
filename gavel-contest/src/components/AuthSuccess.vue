@@ -72,7 +72,7 @@
           {{ data.team1Name + " &emsp; | &emsp; " + data.team2Name }}
         </option> -->
         <option v-for="(data, index) in gameList" :key="index">
-          {{ data }}
+          {{data}}
         </option>
       </select>
     </div>
@@ -293,7 +293,7 @@ export default {
     // },
     getGameName() {
       var link = document.querySelector("#gameViewerLink");
-      const index = this.gameList.indexOf(document.querySelector("#selectGameDiv select").selectedOptions[0].innerHTML)
+      const index = this.gameList.indexOf(document.querySelector("#selectGameDiv select").selectedOptions[0].innerHTML.trim())
     //  console.log("localhost:8000/?game=" + document.querySelector("#selectGameDiv select").selectedOptions[0].innerHTML)
       link.setAttribute("href", "http://localhost:8000/?game=" + this.gameNameList[index]);
       return false;
@@ -311,13 +311,13 @@ export default {
       for (let i = 0; i < rawGames.length; i++) {
         if (rawGames[i].indexOf("-" + teamName) !== -1 && rawGames[i].indexOf("-T2") !== -1) { // user in second team, team 2 specific
           gameNames.push(rawGames[i].slice(0, rawGames[i].lastIndexOf('.')))
-          displayNames.push(rawGames[i].slice(0, rawGames[i].lastIndexOf('-T2')).replace("_", " ") + " (Team specific)")
+          displayNames.push(rawGames[i].slice(0, rawGames[i].lastIndexOf('-T2')).replace("_", " "))
         } else if (rawGames[i].indexOf("-" + teamName) === -1 && // user in first team, team 1 specific
                    rawGames[i].indexOf(teamName) !== -1 &&
                    rawGames[i].indexOf("-T1") !== -1) { 
           gameNames.push(rawGames[i].slice(0, rawGames[i].lastIndexOf('.')))
-          displayNames.push(rawGames[i].slice(0, rawGames[i].lastIndexOf('-T1')).replace("_", " ") + " (Team specific)")
-        } else if ((rawGames[i].indexOf("-G") !== -1)) { // general game
+          displayNames.push(rawGames[i].slice(0, rawGames[i].lastIndexOf('-T1')).replace("_", " "))
+        } else if ((rawGames[i].indexOf("-G") !== -1) && rawGames[i].indexOf(teamName) === -1) { // general game
           gameNames.push(rawGames[i].slice(0, rawGames[i].lastIndexOf('.')))
           displayNames.push(rawGames[i].slice(0, rawGames[i].lastIndexOf('-G')).replace("_", " "))
         }
@@ -338,7 +338,7 @@ export default {
       }).then(result => result.data).then(data => {password = data})   
 
       document.querySelector("#teamPasswordField").innerHTML = password
-      await new Promise(resolve => setTimeout(resolve, 5000)); 
+      await new Promise(resolve => setTimeout(resolve, 5000)).catch() 
       document.querySelector("#teamPasswordField").innerHTML = ''
       
     }
