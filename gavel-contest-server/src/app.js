@@ -10,6 +10,9 @@ app.use(morgan('combined'))
 app.use(bodyParser.json())
 app.use(cors())
 
+const fileUpload = require('express-fileupload');
+app.use(fileUpload());
+
 require('./routes')(app)
 
 sequelize.sync()

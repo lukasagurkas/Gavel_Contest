@@ -43,4 +43,7 @@ module.exports = (app) => {
 
     app.post('/getUserTeam',
         TeamGetterController.getUserTeam)
+
+    app.post('/getUserInTeam',
+        TeamGetterController.getUserInTeam)
 }

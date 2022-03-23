@@ -36,5 +36,23 @@ module.exports = {
         }
 
         res.json(teamName)
+    },
+
+    async getUserInTeam(req, res) {
+        const userId = await db.user.findOne({
+            where: {email:req.body.email}})
+            .then(function(user){
+                return user.dataValues.id
+        })
+
+        var bool = false
+
+        if (await db.userteam.findOne({where: {userId: userId}}) == null) {
+            bool = false;
+        } else {
+            bool = true;
+        }
+
+        res.json(bool)
     }
 }

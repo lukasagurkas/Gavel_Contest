@@ -7,5 +7,9 @@ export default {
 
     getUserTeam (email) {
         return Api().post('getUserTeam', email)
+    },
+
+    getUserInTeam (email) {
+        return Api().post('getUserInTeam', email)
     }
 }
