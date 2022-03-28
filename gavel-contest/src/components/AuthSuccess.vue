@@ -196,22 +196,27 @@ export default {
         title: "Join " + name,
         message: "Are you sure you want to join team '" + name + "'?",
         okButton: "Join",
+        email: firebase.auth().currentUser.email,
+        name: name
       });
-      if (ok) {
-        try {
-          await TeamCreationService.join({
-            email: firebase.auth().currentUser.email,
-            name: name,
-          });
-        } catch (error) {
-          await this.$refs.alertDialogue.show({
-            title: "You did not join team " + name,
-            message: "You are already a member of a team",
-            okButton: "Okay",
-          });
-        }
-      } else {
-      }
+      console.log(ok)
+      // if (ok) {
+      //   console.log(ok)
+      //   try {
+      //     await TeamCreationService.join({
+      //       email: firebase.auth().currentUser.email,
+      //       name: name,
+      //       password: password
+      //     });
+      //   } catch (error) {
+      //     await this.$refs.alertDialogue.show({
+      //       title: "You did not join team " + name,
+      //       message: "You are already a member of a team",
+      //       okButton: "Okay",
+      //     });
+      //   }
+      // } else {
+      // }
     },
     // async onUploadGame() {
     //   {

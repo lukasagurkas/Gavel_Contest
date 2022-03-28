@@ -52,9 +52,15 @@ module.exports = {
                 return user.dataValues.id
         })
 
+        console.log(req.body)
+
         if (await db.userteam.findOne({where: {userID:userId}}) != null) {
             res.status(400).send({
                 error: "User already has team"
+            })
+        } else if (await db.team.findOne({where: {name:req.body.name}}).then(function(team){return team.dataValues.password}) !== req.body.password) {
+            res.status(400).send({
+                error: "Incorrect password"
             })
         } else {
             try {
@@ -63,7 +69,7 @@ module.exports = {
                     .then(function(team){
                         return team.dataValues.id
                 })
-
+                
                 await db.userteam.create({userID: userId, teamID: teamId})
             } catch (error) {
                 res.status(400).send({

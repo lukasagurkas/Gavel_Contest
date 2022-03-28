@@ -4,6 +4,7 @@
         <p>{{ message }}</p>
         <div class="btns">
             <button class="cancel-btn" @click="_cancel">{{ cancelButton }}</button>
+            <input class="password" placeholder="password"/>
             <span class="ok-btn" @click="_confirm">{{ okButton }}</span>
         </div>
     </popup-modal>
@@ -11,6 +12,7 @@
 
 <script>
 import PopupModal from './PopupModal.vue'
+import TeamCreationService from "@/services/TeamCreationService";
 
 export default {
     name: 'ConfirmDialogue',
@@ -23,6 +25,9 @@ export default {
         message: undefined, // Main text content
         okButton: undefined, // Text for confirm button; leave it empty because we don't know what we're using it for
         cancelButton: 'Go Back', // text for cancel button
+        email: '',
+        name: '',
+        password: '',
         
         // Private variables
         resolvePromise: undefined,
@@ -37,6 +42,8 @@ export default {
             if (opts.cancelButton) {
                 this.cancelButton = opts.cancelButton
             }
+            this.email = opts.email,
+            this.name = opts.name
             // Once we set our config, we tell the popup modal to open
             this.$refs.popup.open()
             // Return promise so the caller can get results
@@ -46,9 +53,20 @@ export default {
             })
         },
 
-        _confirm() {
+        async _confirm() {
             this.$refs.popup.close()
             this.resolvePromise(true)
+            this.password = document.querySelector(".password").value
+            try {
+                await TeamCreationService.join({
+                    email: this.email,
+                    name: this.name,
+                    password: this.password
+                });
+            } catch (error) {
+               
+            }
+            
         },
 
         _cancel() {
@@ -56,8 +74,8 @@ export default {
             this.resolvePromise(false)
             // Or you can throw an error
             // this.rejectPromise(new Error('User cancelled the dialogue'))
-        },
-    },
+        }
+    }
 }
 </script>
 
