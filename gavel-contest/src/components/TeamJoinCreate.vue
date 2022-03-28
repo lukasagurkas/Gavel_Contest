@@ -27,9 +27,9 @@
         </ul>
       </div>
       <div>
-      <button @click="teamJoinedOrCreated">Continue</button>
-      <div class="error"/>
-    </div>
+        <button @click="teamJoinedOrCreated">Continue</button>
+        <div class="error" />
+      </div>
     </div>
   </div>
 </template>
@@ -66,7 +66,6 @@ export default {
     team();
   },
   components: {
-
     ConfirmDialogue,
     AlertDialogue,
   },
@@ -90,14 +89,17 @@ export default {
         this.teamJSON = await TeamGetterService.getAll();
       } catch (error) {}
     },
-    teamJoinedOrCreated() {
-      const user = firebase.auth().currentUser;
-			console.log(user.emailVerified)
-      if (user.emailVerified) {
+    async teamJoinedOrCreated() {
+      var userInTeam;
+      userInTeam = await TeamGetterService.getUserInTeam({
+        email: this.email,
+      }).then((result) => result.data);
+
+      if (userInTeam) {
         router.push("/success");
       } else {
         document.querySelector(".error").innerHTML =
-          "Email was not verified or try reloading the page";
+          "You have not joined/created a team or try reloading the page";
       }
     },
     async createTeam() {
@@ -135,9 +137,16 @@ export default {
       }
     },
     async getUserTeamName(vm) {
-      this.teamName = await this.getUserTeam(vm.email).then(
-        (result) => result.data
-      );
+      var userInTeam;
+      userInTeam = await TeamGetterService.getUserInTeam({
+        email: vm.email,
+      }).then((result) => result.data);
+
+      if (userInTeam) {
+        this.teamName = await this.getUserTeam(vm.email).then(
+          (result) => result.data
+        );
+      }
     },
     async getUserTeam(email) {
       return await TeamGetterService.getUserTeam({

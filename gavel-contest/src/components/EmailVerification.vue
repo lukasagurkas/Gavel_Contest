@@ -1,19 +1,19 @@
 <template>
   <div>
-		<div>
-			<p>Current email:</p>
-			<p>{{ email }}</p>
-		</div>
+    <div>
+      <p>Current email:</p>
+      <p>{{ email }}</p>
+    </div>
     <p>Please verify your email</p>
     <div>
       <button @click="resendVerificationEmail">Resend</button>
       <button @click="emailVerified">Continue</button>
-      <div class="error"/>
+      <div class="error" />
     </div>
     <div>
       <input name="new-email" type="email" placeholder="Enter new email" />
       <button @click="setNewEmail">Set new email address</button>
-			<div class="errorSettingNewEmail"/>
+      <div class="errorSettingNewEmail" />
     </div>
     <button @click="logOut">Log out</button>
   </div>
@@ -23,22 +23,24 @@
 import firebase from "firebase/compat/app";
 import router from "../router";
 import AuthenticationService from "@/services/AuthenticationService";
+import UserGetterService from "@/services/UserGetterService";
 
 export default {
-	data() {
+  data() {
     return {
       email: "",
       user: {},
     };
   },
   mounted() {
-		var vm = this;
+    var vm = this;
     var reg = this.register;
+    var reroute = this.reroute;
     firebase.auth().onAuthStateChanged(function (user) {
-			vm.email = user.email;
+      vm.email = user.email;
       if (user.emailVerified) {
         reg(vm);
-        router.push("/teams");
+        reroute(vm);
       }
     });
   },
@@ -46,13 +48,20 @@ export default {
     logOut() {
       firebase.auth().signOut();
     },
-    async register(vm) {
-      try {
-        await AuthenticationService.register({
+    register(vm) {
+      AuthenticationService.register({
+        email: vm.email,
+        name: vm.name,
+      });
+    },
+    async reroute(vm) {
+      var userIsRegistered = false;
+      while (!userIsRegistered) {
+        userIsRegistered = await UserGetterService.getUserIsRegistered({
           email: vm.email,
-          name: vm.name,
-        });
-      } catch (error) {}
+        }).then((result) => result.data);
+      }
+      router.push("/teams");
     },
     async resendVerificationEmail() {
       firebase
@@ -67,7 +76,7 @@ export default {
     },
     emailVerified() {
       const user = firebase.auth().currentUser;
-			console.log(user.emailVerified)
+      console.log(user.emailVerified);
       if (user.emailVerified) {
         router.push("/teams");
       } else {
@@ -89,8 +98,8 @@ export default {
         })
         .catch((error) => {
           console.log(error);
-					document.querySelector(".errorSettingNewEmail").innerHTML =
-          "To change your email address you have to sign out, sign in and try again.";
+          document.querySelector(".errorSettingNewEmail").innerHTML =
+            "To change your email address you have to sign out, sign in and try again.";
         });
     },
   },
