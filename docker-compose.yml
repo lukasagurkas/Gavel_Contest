@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  gavel-contest-server:
+    build:
+      context: ./gavel-contest-server
+      dockerfile: Dockerfile
+    restart:
+      always
+    ports:
+      - "8081:8081"
+    container_name: gavel-contest-server
+    volumes:
+      - ./gavel-contest-server:/usr/src/app/gavel-contest-server
+      - /usr/src/app/gavel-contest-server/node_modules
+  gavel-contest:
+    build:
+      context: ./gavel-contest
+      dockerfile: Dockerfile
+    restart:
+      always
+    ports:
+      - "8080:80"
+    container_name: gavel-contest
+    volumes:
+      - ./gavel-contest:/usr/src/app/gavel-contest
+      - /usr/src/app/gavel-contest/node_modules
+  game-server:
+    build:
+      context: ./gavel-contest-game
+      dockerfile: Dockerfile
+    restart:
+      always
+    ports:
+      - "8000:8000"
+    container_name: gavel-contest-game
+    volumes:
+      - ./gavel-contest-game:/usr/src/app/gavel-contest-game
+      - /usr/src/app/gavel-contest-game/node_modules

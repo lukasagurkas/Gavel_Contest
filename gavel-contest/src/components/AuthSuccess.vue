@@ -22,7 +22,7 @@
         <alert-dialogue ref="alertDialogue"></alert-dialogue>
       </ul>
     </div>
-    <br/>
+    <br />
     <div>
       <button @click="showTeamPassword">Get Team Password</button>
       <p id="teamPasswordField"></p>
@@ -72,7 +72,7 @@
           {{ data.team1Name + " &emsp; | &emsp; " + data.team2Name }}
         </option> -->
         <option v-for="(data, index) in gameList" :key="index">
-          {{data}}
+          {{ data }}
         </option>
       </select>
     </div>
@@ -98,6 +98,8 @@
       </button>
     </div>
     <button @click="deleteUserTeam()">Delete User teams</button>
+    <div class="uploadResponse" />
+    <div class="uploadError" />
   </div>
 </template>
 
@@ -126,7 +128,7 @@ export default {
       gameListJSON: {},
       gameList: "",
       gameNameList: "",
-      selectedFile: ""
+      selectedFile: "",
     };
   },
   mounted() {
@@ -160,7 +162,9 @@ export default {
       firebase.auth().signOut();
     },
     async getUserTeamName(vm) {
-      this.teamName = await this.getUserTeam(vm.email).then(result => result.data)
+      this.teamName = await this.getUserTeam(vm.email).then(
+        (result) => result.data
+      );
     },
     async createTeam() {
       const val = document.querySelector("input[name=team-name]").value;
@@ -264,10 +268,10 @@ export default {
       axios
         .post("http://localhost:8081/uploadFile", formData)
         .then((res) => {
-          console.log(res);
+          document.querySelector(".uploadResponse").innerHTML = res;
         })
         .catch((err) => {
-          console.log(err);
+          document.querySelector(".uploadError").innerHTML = err.response.data.error;
         });
     },
     // async viewGame() {
@@ -291,49 +295,85 @@ export default {
     // },
     getGameName() {
       var link = document.querySelector("#gameViewerLink");
-      const index = this.gameList.indexOf(document.querySelector("#selectGameDiv select").selectedOptions[0].innerHTML.trim())
-    //  console.log("localhost:8000/?game=" + document.querySelector("#selectGameDiv select").selectedOptions[0].innerHTML)
-      link.setAttribute("href", "http://localhost:8000/?game=" + this.gameNameList[index]);
+      const index = this.gameList.indexOf(
+        document
+          .querySelector("#selectGameDiv select")
+          .selectedOptions[0].innerHTML.trim()
+      );
+      //  console.log("localhost:8000/?game=" + document.querySelector("#selectGameDiv select").selectedOptions[0].innerHTML)
+      link.setAttribute(
+        "href",
+        "http://localhost:8000/?game=" + this.gameNameList[index]
+      );
       return false;
     },
     async getGameList() {
-      let rawGames = await GameListGetterService.getGames()
-      let gameNames = []
-      let displayNames = []
+      let rawGames = await GameListGetterService.getGames();
+      let gameNames = [];
+      let displayNames = [];
 
-      rawGames = rawGames.data
-      const email = firebase.auth().currentUser.email
-      let teamName = ''
-      await this.getUserTeam(email).then(result => result.data).then(data => {teamName = data.replace(" ", "_")})   
+      rawGames = rawGames.data;
+      const email = firebase.auth().currentUser.email;
+      let teamName = "";
+      await this.getUserTeam(email)
+        .then((result) => result.data)
+        .then((data) => {
+          teamName = data.replace(" ", "_");
+        });
 
       for (let i = 0; i < rawGames.length; i++) {
-        if (rawGames[i].indexOf("-" + teamName) !== -1 && rawGames[i].indexOf("-T2") !== -1) { // user in second team, team 2 specific
-          gameNames.push(rawGames[i].slice(0, rawGames[i].lastIndexOf('.')))
-          displayNames.push(rawGames[i].slice(0, rawGames[i].lastIndexOf('-T2')).replace("_", " "))
-        } else if (rawGames[i].indexOf("-" + teamName) === -1 && // user in first team, team 1 specific
-                   rawGames[i].indexOf(teamName) !== -1 &&
-                   rawGames[i].indexOf("-T1") !== -1) { 
-          gameNames.push(rawGames[i].slice(0, rawGames[i].lastIndexOf('.')))
-          displayNames.push(rawGames[i].slice(0, rawGames[i].lastIndexOf('-T1')).replace("_", " "))
-        } else if ((rawGames[i].indexOf("-G") !== -1) && rawGames[i].indexOf(teamName) === -1) { // general game
-          gameNames.push(rawGames[i].slice(0, rawGames[i].lastIndexOf('.')))
-          displayNames.push(rawGames[i].slice(0, rawGames[i].lastIndexOf('-G')).replace("_", " "))
+        if (
+          rawGames[i].indexOf("-" + teamName) !== -1 &&
+          rawGames[i].indexOf("-T2") !== -1
+        ) {
+          // user in second team, team 2 specific
+          gameNames.push(rawGames[i].slice(0, rawGames[i].lastIndexOf(".")));
+          displayNames.push(
+            rawGames[i]
+              .slice(0, rawGames[i].lastIndexOf("-T2"))
+              .replace("_", " ")
+          );
+        } else if (
+          rawGames[i].indexOf("-" + teamName) === -1 && // user in first team, team 1 specific
+          rawGames[i].indexOf(teamName) !== -1 &&
+          rawGames[i].indexOf("-T1") !== -1
+        ) {
+          gameNames.push(rawGames[i].slice(0, rawGames[i].lastIndexOf(".")));
+          displayNames.push(
+            rawGames[i]
+              .slice(0, rawGames[i].lastIndexOf("-T1"))
+              .replace("_", " ")
+          );
+        } else if (
+          rawGames[i].indexOf("-G") !== -1 &&
+          rawGames[i].indexOf(teamName) === -1
+        ) {
+          // general game
+          gameNames.push(rawGames[i].slice(0, rawGames[i].lastIndexOf(".")));
+          displayNames.push(
+            rawGames[i]
+              .slice(0, rawGames[i].lastIndexOf("-G"))
+              .replace("_", " ")
+          );
         }
-        
       }
-      this.gameList = displayNames
-      this.gameNameList = gameNames
+      this.gameList = displayNames;
+      this.gameNameList = gameNames;
     },
     async getUserTeam(email) {
       return await TeamGetterService.getUserTeam({
-        email: email
-      })
+        email: email,
+      });
     },
     async showTeamPassword() {
-      let password = ''
+      let password = "";
       await TeamGetterService.getPassword({
-        email: firebase.auth().currentUser.email
-      }).then(result => result.data).then(data => {password = data})   
+        email: firebase.auth().currentUser.email,
+      })
+        .then((result) => result.data)
+        .then((data) => {
+          password = data;
+        });
 
       document.querySelector("#teamPasswordField").innerHTML = password
       await new Promise(resolve => setTimeout(resolve, 5000)).catch() 
@@ -351,7 +391,7 @@ export default {
 
 
 <style scoped>
-.error {
+.error, .uploadError {
   color: red;
 }
 
