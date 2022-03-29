@@ -4,6 +4,8 @@ services:
     build:
       context: ./gavel-contest-server
       dockerfile: Dockerfile
+    restart:
+      always
     ports:
       - "8081:8081"
     container_name: gavel-contest-server
@@ -14,6 +16,8 @@ services:
     build:
       context: ./gavel-contest
       dockerfile: Dockerfile
+    restart:
+      always
     ports:
       - "8080:80"
     container_name: gavel-contest
@@ -24,6 +28,8 @@ services:
     build:
       context: ./gavel-contest-game
       dockerfile: Dockerfile
+    restart:
+      always
     ports:
       - "8000:8000"
     container_name: gavel-contest-game
