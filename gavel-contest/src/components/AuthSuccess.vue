@@ -97,6 +97,7 @@
         Upload file
       </button>
     </div>
+    <button @click="deleteUserTeam()">Delete User teams</button>
   </div>
 </template>
 
@@ -192,31 +193,23 @@ export default {
       } catch (error) {}
     },
     async clickedTeam(name) {
-      const ok = await this.$refs.confirmDialogue.show({
-        title: "Join " + name,
-        message: "Are you sure you want to join team '" + name + "'?",
-        okButton: "Join",
-        email: firebase.auth().currentUser.email,
-        name: name
-      });
-      console.log(ok)
-      // if (ok) {
-      //   console.log(ok)
-      //   try {
-      //     await TeamCreationService.join({
-      //       email: firebase.auth().currentUser.email,
-      //       name: name,
-      //       password: password
-      //     });
-      //   } catch (error) {
-      //     await this.$refs.alertDialogue.show({
-      //       title: "You did not join team " + name,
-      //       message: "You are already a member of a team",
-      //       okButton: "Okay",
-      //     });
-      //   }
-      // } else {
-      // }
+
+        let err = ""
+        const ok = await this.$refs.confirmDialogue.show({
+          title: "Join " + name,
+          message: "Are you sure you want to join team '" + name + "'?",
+          okButton: "Join",
+          email: firebase.auth().currentUser.email,
+          name: name
+        }).catch(error => {err = error.message})
+      
+      if(!ok) {
+        await this.$refs.alertDialogue.show({
+            title: "You did not join team " + name,
+            message: err,
+            okButton: "Okay",
+          });
+      }
     },
     // async onUploadGame() {
     //   {
@@ -346,6 +339,10 @@ export default {
       await new Promise(resolve => setTimeout(resolve, 5000)).catch() 
       document.querySelector("#teamPasswordField").innerHTML = ''
       
+    },
+
+    async deleteUserTeam() {
+      await TeamCreationService.delete()
     }
   },
 };

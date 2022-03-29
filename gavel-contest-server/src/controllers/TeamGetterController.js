@@ -13,14 +13,14 @@ module.exports = {
     },
 
     async getUserTeam(req, res) {
-        const userID = await db.user.findOne({
+        const userId = await db.user.findOne({
             where: {email:req.body.email}})
             .then(function(user){
                 return user.dataValues.id
         })
         
         const teamId = await db.userteam.findOne({
-            where: {userID: userID}})
+            where: {userId: userId}})
             .then(function(userteam) {
                 return userteam.dataValues.teamID
             })
@@ -42,13 +42,13 @@ module.exports = {
     async getUserInTeam(req, res) {
         var bool = false
 
-        const userID = await db.user.findOne({
+        const userId = await db.user.findOne({
             where: {email:req.body.email}})
             .then(function(user){
                 return user.dataValues.id
             })
 
-        if (await db.userteam.findOne({where: {userID: userID}}) == null) {
+        if (await db.userteam.findOne({where: {userId: userId}}) == null) {
             bool = false;
         } else {
             bool = true;
@@ -57,20 +57,20 @@ module.exports = {
         res.json(bool)
     },
     async getPassword(req, res) {
-        const userID = await db.user.findOne({
+        const userId = await db.user.findOne({
             where: {email:req.body.email}})
             .then(function(user){
                 return user.dataValues.id
             })
 
-        const teamID = await db.userteam.findOne({
-            where: {userID: userID}})
+        const teamId = await db.userteam.findOne({
+            where: {userId: userId}})
             .then(function(userteam) {
                 return userteam.dataValues.teamID
             })
 
         let password = await db.team.findOne({
-            where: {id: teamID}})
+            where: {id: teamId}})
             .then(function(team) {
                 return team.dataValues.password
             })

@@ -52,15 +52,13 @@ module.exports = {
                 return user.dataValues.id
         })
 
-        console.log(req.body)
-
         if (await db.userteam.findOne({where: {userID:userId}}) != null) {
             res.status(400).send({
-                error: "User already has team"
+                error: "You are already part of a team"
             })
         } else if (await db.team.findOne({where: {name:req.body.name}}).then(function(team){return team.dataValues.password}) !== req.body.password) {
             res.status(400).send({
-                error: "Incorrect password"
+                error: "The submitted password was incorrect"
             })
         } else {
             try {
@@ -78,5 +76,9 @@ module.exports = {
                 console.log("Error", err.message);
             }
         }
+    },
+
+    async deleteUserTeams() {
+        ///await db.userteam.drop()
     }
 }

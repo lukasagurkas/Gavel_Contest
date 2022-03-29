@@ -46,10 +46,10 @@ module.exports = (app) => {
 
     app.post('/getPassword',
         TeamGetterController.getPassword)
-
+        
     app.post('/getUserInTeam',
         TeamGetterController.getUserInTeam)
 
-    app.post('/getUserIsRegistered',
-        UserGetterController.getUserIsRegistered)
+    app.delete('/deleteUserTeams',
+        TeamCreationController.deleteUserTeams)
 }

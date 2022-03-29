@@ -54,19 +54,19 @@ export default {
         },
 
         async _confirm() {
-            this.$refs.popup.close()
-            this.resolvePromise(true)
             this.password = document.querySelector(".password").value
-            try {
-                await TeamCreationService.join({
+            await TeamCreationService.join({
                     email: this.email,
                     name: this.name,
                     password: this.password
-                });
-            } catch (error) {
-               
-            }
-            
+                }).then(() => {
+                    console.log("here")
+                    this.$refs.popup.close()
+                    this.resolvePromise(true)
+                }).catch(error => {
+                    this.$refs.popup.close()
+                    this.rejectPromise(new Error(error.response.data.error))
+                })            
         },
 
         _cancel() {
