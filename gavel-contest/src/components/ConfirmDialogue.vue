@@ -60,7 +60,6 @@ export default {
                     name: this.name,
                     password: this.password
                 }).then(() => {
-                    console.log("here")
                     this.$refs.popup.close()
                     this.resolvePromise(true)
                 }).catch(error => {

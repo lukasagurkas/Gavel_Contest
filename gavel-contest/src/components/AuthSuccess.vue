@@ -199,20 +199,27 @@ export default {
     async clickedTeam(name) {
 
         let err = ""
+        let msg = ""
         const ok = await this.$refs.confirmDialogue.show({
           title: "Join " + name,
           message: "Are you sure you want to join team '" + name + "'?",
           okButton: "Join",
           email: firebase.auth().currentUser.email,
           name: name
-        }).catch(error => {err = error.message})
-      
-      if(!ok) {
+        }).then(message => {msg = message}).catch(error => {err = error.message})
+        
+      if(!ok && err) {
         await this.$refs.alertDialogue.show({
             title: "You did not join team " + name,
             message: err,
             okButton: "Okay",
           });
+      } else if (!err && msg) {
+        await this.$refs.alertDialogue.show({
+            title: "You joined the team!",
+            message: "You successfully joined team " + name,
+            okButton: "Okay"
+        })
       }
     },
     // async onUploadGame() {
