@@ -37,8 +37,8 @@ const server = http.createServer(function (req, res) {
             path = "test.html"
         }
         
-        path = path.replace(/\//g, "\\")
-        let file = __dirname + "\\" + path
+        //path = path.replace(/\//g, "\\")
+        let file = __dirname + "/" + path
         // console.log(file)
         // console.log(path)
         fs.readFile(file, function (err, content) {
