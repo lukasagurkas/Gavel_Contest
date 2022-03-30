@@ -52,4 +52,7 @@ module.exports = (app) => {
 
     app.delete('/deleteUserTeams',
         TeamCreationController.deleteUserTeams)
+
+    app.post('/getCipher',
+        GameGetterController.getCipher)
 }
