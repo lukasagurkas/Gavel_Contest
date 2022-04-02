@@ -16,7 +16,11 @@ new Vue({
     firebase.initializeApp(firebaseConfig);
     firebase.auth().onAuthStateChanged((user) => {
       if(user) {
-        self.$router.push('/verifyEmail')
+        if (user.emailVerified) {
+          self.$router.push('/teams')
+        } else {
+          self.$router.push('/verifyEmail')
+        }
       } else {
         self.$router.push('/auth')
       }
