@@ -19,7 +19,7 @@ services:
     restart:
       always
     ports:
-      - "8080:80"
+      - "8070:80"
     container_name: gavel-contest
     volumes:
       - ./gavel-contest:/usr/src/app/gavel-contest
