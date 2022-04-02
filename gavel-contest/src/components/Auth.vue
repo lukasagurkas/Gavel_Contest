@@ -16,18 +16,18 @@ export default {
         //firebase.auth.GoogleAuthProvider.PROVIDER_ID,
         firebase.auth.EmailAuthProvider.PROVIDER_ID,
       ],
-      callbacks: {
-        signInSuccessWithAuthResult: function (authResult, redirectUrl) {
-          var user = authResult.user;
+      // callbacks: {
+      //   signInSuccessWithAuthResult: function (authResult, redirectUrl) {
+      //     var user = authResult.user;
 
-          if (authResult.additionalUserInfo.isNewUser) {
-            console.log("new signin");
-            user.sendEmailVerification();
-          }
+      //     if (authResult.additionalUserInfo.isNewUser) {
+      //       console.log("new signin");
+      //       user.sendEmailVerification();
+      //     }
 
-          return true;
-        },
-      },
+      //     return true;
+      //   },
+      // },
     };
     var ui = new firebaseui.auth.AuthUI(firebase.auth());
     ui.start("#firebaseui-auth-container", uiConfig);

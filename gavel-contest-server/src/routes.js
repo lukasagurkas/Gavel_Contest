@@ -55,4 +55,7 @@ module.exports = (app) => {
 
     app.post('/getCipher',
         GameGetterController.getCipher)
+
+    app.post('/getUserIsRegistered',
+        UserGetterController.getUserIsRegistered)
 }

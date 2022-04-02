@@ -143,7 +143,7 @@ export default {
         vm.email = vm.user.email;
         vm.photo = vm.user.photoURL;
         vm.userID = vm.user.uid;
-        reg(vm);
+        //reg(vm);
         getTeamName(vm);
       }
     });
