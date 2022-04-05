@@ -4,5 +4,5 @@ COPY package*.json ./
 RUN npm install
 RUN npm install sqlite3 --save
 COPY . .
-EXPOSE 8081
+EXPOSE 7081
 CMD [ "npm", "run", "server" ]

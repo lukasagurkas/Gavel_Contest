@@ -5,6 +5,7 @@ import firebase from 'firebase/compat/app'
 import router from './router'
 import VuejsDialog from "vuejs-dialog"
 import { firebaseConfig } from './helpers/firebase.config'
+import 'firebaseui/dist/firebaseui.css'
 
 Vue.use(VueRouter)
 Vue.use(VuejsDialog)
