@@ -3,7 +3,7 @@ FROM node:lts-alpine as build-stage
 WORKDIR /usr/src/app/gavel-contest
 COPY package*.json ./
 RUN npm install && npm install @vue/cli-service --save &&\
-         npm install vue-template-compiler --save
+         npm install vue-template-compiler --save && npm install postcss
 COPY . .
 RUN npm run build
 
