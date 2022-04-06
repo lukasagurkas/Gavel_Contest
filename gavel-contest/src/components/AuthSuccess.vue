@@ -271,7 +271,8 @@ export default {
 
       // sending file to the backend
       axios
-        .post("http://localhost:7081/uploadFile", formData)
+        //.post("http://localhost:7081/uploadFile", formData) #TODO
+        .post("/contest/api/uploadFile", formData)
         .then((res) => {
           document.querySelector(".uploadResponse").innerHTML = res;
         })
