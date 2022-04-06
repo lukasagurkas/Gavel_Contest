@@ -310,8 +310,9 @@ export default {
       let cipher = ""
       await GameGetterService.getCipher({name: this.gameNameList[index]}).then(res => {cipher = res.data})
 
-      window.open("http://localhost:8000/?game=" + cipher)
-
+      //window.open("http://localhost:8000/?game=" + cipher) TODO
+      window.open("/contest/visualizer/?game=" + cipher)
+ 
     },
     async getGameList() {
       let rawGames = await GameListGetterService.getGames();
