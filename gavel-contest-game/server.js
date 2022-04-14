@@ -31,10 +31,11 @@ const server = http.createServer(function (req, res) {
         
         if (path.includes("?game=")) {
             path = path.slice(0, path.lastIndexOf('?'))
-        }
-
-        if (path == "") {
+        } else if (path == "") {
             path = "test.html"
+        } else {
+            console.log("Access denied")
+            return;
         }
         
         //path = path.replace(/\//g, "\\")
