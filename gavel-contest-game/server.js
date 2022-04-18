@@ -26,23 +26,74 @@ const server = http.createServer(function (req, res) {
             res.end(body)
         })
     } else if (req.method.toLowerCase() == 'get') {
+        let paths = ["test.html",
+        "app.js",
+        "test.css",
+        "lib/cginput.js",
+        "player.js",
+        "player.html",
+        "core/Drawer.js",
+        "assets.js",
+        "config.js",
+        "core/utils.js",
+        "core/constants.js",
+        "core/ErrorLog.js",
+        "core/rendering.js",
+        "core/ModuleError.js",
+        "entity-module/GraphicEntityModule.js",
+        "entity-module/CommandParser.js",
+        "entity-module/ContainerBasedEntity.js",
+        "entity-module/Command.js",
+        "entity-module/Entity.js",
+        "entity-module/properties.js",
+        "entity-module/EntityFactory.js",
+        "core/transitions.js",
+        "entity-module/errors/InvalidPlayerColorToken.js",
+        "entity-module/Circle.js",
+        "entity-module/Line.js",
+        "entity-module/Rectangle.js",
+        "entity-module/Sprite.js",
+        "entity-module/Text.js",
+        "entity-module/BitmapText.js",
+        "entity-module/Group.js",
+        "entity-module/BufferedGroup.js",
+        "entity-module/SpriteAnimation.js",
+        "entity-module/RoundedRectangle.js",
+        "entity-module/Polygon.js",
+        "entity-module/TilingSprite.js",
+        "entity-module/Shape.js",
+        "entity-module/SpriteBasedEntity.js",
+        "entity-module/TextureBasedEntity.js",
+        "entity-module/textUtils.js",
+        "entity-module/errors/MissingBitmapFontError.js",
+        "entity-module/errors/MissingImageError.js",
+        "lib/pixi6.js",
+        "assets/background.png"]
+
+        const gamesRaw = fs.readdirSync(__dirname + "\\games")
+        let games = []
+        for (let i = 0; i < gamesRaw.length; i++) {
+            games.push("games/" + gamesRaw[i])
+        }
+        paths = paths.concat(games)
+
+
         let parsedURL = url.parse(req.url, true)
         let path = parsedURL.path.replace(/^\/+|\/+$/g, "")
-       
-        if (path.includes("../")) {
+        if (!paths.includes(path) && !path.includes("?game=")) {
             console.log("Access denied")
             return;
         } else if (path.includes("?game=")) {
             path = path.slice(0, path.lastIndexOf('?'))
         }
-        
-        if (path == "") {
+
+        if (path === "") {
             path = "test.html"
         }
         
         //path = path.replace(/\//g, "\\")
         let file = __dirname + "\\" + path
-        // console.log(file)
+
         fs.readFile(file, function (err, content) {
             if (err) {
                 console.log(`File not found ${file}`)
