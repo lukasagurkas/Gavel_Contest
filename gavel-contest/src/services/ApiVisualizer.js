@@ -1,8 +1,8 @@
 import axios from 'axios'
+const config = require('../configurations/config.js')
 
 export default () => {
     return axios.create({
-        //baseURL: `/contest/visualizer/`
-        baseURL: `http://localhost:8000/` //TODO
+        baseURL: config.visualizer_base_path
     })
 }

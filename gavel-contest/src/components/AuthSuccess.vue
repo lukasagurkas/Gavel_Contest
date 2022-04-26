@@ -117,6 +117,9 @@ import AlertDialogue from "../components/AlertDialogue.vue";
 import GameGetterService from "@/services/GameGetterService";
 import GameListGetterService from "@/services/GameListGetterService";
 import axios from "axios";
+import { upload_file_path } from '../configurations/config.js';
+
+const config = require('../configurations/config.js')
 
 export default {
   data() {
@@ -277,8 +280,7 @@ export default {
 
       // sending file to the backend
       axios
-        .post("http://localhost:7081/uploadFile", formData) //TODO
-        //.post("/contest/api/uploadFile", formData)
+        .post(config.upload_file_path, formData)
         .then((res) => {
           document.querySelector(".uploadResponse").innerHTML = res;
         })
@@ -316,8 +318,7 @@ export default {
       let cipher = ""
       await GameGetterService.getCipher({name: this.gameNameList[index]}).then(res => {cipher = res.data})
 
-      window.open("http://localhost:8000/?game=" + cipher) //TODO
-      //window.open("/contest/visualizer/?game=" + cipher)
+      window.open(config.visualize_game_path + cipher)
  
     },
     async getGameList() {
