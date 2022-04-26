@@ -3,9 +3,10 @@
         <h2 style="margin-top: 0">{{ title }}</h2>
         <p>{{ message }}</p>
         <div class="btns">
-            <button class="cancel-btn" @click="_cancel">{{ cancelButton }}</button>
             <input class="password" placeholder="password"/>
             <span class="ok-btn" @click="_confirm">{{ okButton }}</span>
+            <br>
+            <button class="cancel-btn" @click="_cancel">{{ cancelButton }}</button>
         </div>
     </popup-modal>
 </template>
@@ -80,32 +81,46 @@ export default {
 
 <style scoped>
 .btns {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+
 }
 
 .ok-btn {
     padding: 0.5em 1em;
-    background-color: #e2df0d;
-    color: #ffffff;
-    border: 2px solid #1a0ec5;
+    background-color: #dee2e6;
+    color: #212529;
+    border: 0.1px solid #212529;
     border-radius: 5px;
     font-weight: bold;
     font-size: 16px;
     text-transform: uppercase;
     cursor: pointer;
+    margin-left: 5px;
 }
 
 .cancel-btn {
     padding: 0.5em 1em;
-    background-color: #e2df0d;
-    color: #ffffff;
-    border: 2px solid #1a0ec5;
+    background-color: #dee2e6;
+    color: #212529;
+    border: 0.1px solid #212529;
     border-radius: 5px;
     font-weight: bold;
     font-size: 16px;
     text-transform: uppercase;
     cursor: pointer;
+    margin-top: 20px;
 }
+
+.password {
+  padding: 0.5em 1em;
+  background-color: #ffffff;
+  color: #212529;
+  border: 0.1px solid #212529;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 16px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+
 </style>

@@ -1,14 +1,16 @@
 <template>
   <div>
+    <button class="button_sign_out" style = "float: right;" @click="logOut">Log out</button>
     <div>
-      <p>Current team:</p>
-      <p>{{ teamName }}</p>
+      <h1>Name of the game</h1>
+
     </div>
     <div>
-      <button @click="logOut">Log out</button>
       <hr />
-      <input name="team-name" type="name" placeholder="Enter Team Name" />
-      <button @click="createTeam">Create new team</button>
+      <p>Your team is:</p>
+      <p>{{ teamName }}</p>
+      <input name="team-name" type="name" class = "text" placeholder="Enter Team Name" />
+      <button class = "button"  style="margin-left: 20px" @click="createTeam">Create new team</button>
       <br />
       <div class="error" />
       <br />
@@ -27,7 +29,7 @@
         </ul>
       </div>
       <div>
-        <button @click="teamJoinedOrCreated">Continue</button>
+        <button class = "button" @click="teamJoinedOrCreated">Continue</button>
         <div class="error" />
       </div>
     </div>
@@ -175,7 +177,7 @@ export default {
 </script>
 
 <style scoped>
-.error {
+.error, .uploadError {
   color: red;
 }
 
@@ -184,16 +186,94 @@ export default {
 }
 
 .team-name {
-  padding: 0.25em 0.5em;
-  background-color: #eccfc9;
-  color: #000000;
-  border: 2px solid #70352a;
+  padding: 0.5em 1em;
+  background-color: #4FB0C6;
+  color: #212529;
+  border: 0.1px solid #212529;
   border-radius: 2px;
   font-weight: bold;
-  font-size: 12px;
+  font-size: 16px;
   text-transform: uppercase;
   cursor: pointer;
-  width: 10%;
+  width: 33%;
   height: 1em;
+  margin-top: 5px;
 }
+
+.button {
+  padding: 0.5em 1em;
+  background-color: #dee2e6;
+  color: #212529;
+  border: 0.1px solid #212529;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 16px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.button_sign_out {
+  padding: 0.5em 1em;
+  background-color: #dee2e6;
+  color: #212529;
+  border: 0.1px solid #212529;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 16px;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+.text {
+  padding: 0.5em 1em;
+  background-color: #ffffff;
+  color: #212529;
+  border: 0.1px solid #212529;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 16px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.upload-button {
+  padding: 0.5em 1em;
+  background-color: #dee2e6;
+  color: #212529;
+  border: 0.1px solid #212529;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 16px;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-left: 5px;
+  align: "right";
+}
+
+/* Split the screen in half */
+.split {
+  height: 100%;
+  width: 50%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+/* Control the left side */
+.left {
+  left: 0;
+  background-color: #ffffff;
+  margin-left: 20px;
+}
+
+/* Control the right side */
+.right {
+  right: 0;
+  background-color: #ffffff;
+  margin-right: 20px;
+}
+
 </style>

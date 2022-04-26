@@ -55,14 +55,15 @@ export default {
 }
 
 .ok-btn {
-    padding: 0.5em 1em;
-    background-color: #e2df0d;
-    color: #ffffff;
-    border: 2px solid #1a0ec5;
-    border-radius: 5px;
-    font-weight: bold;
-    font-size: 16px;
-    text-transform: uppercase;
-    cursor: pointer;
+  padding: 0.5em 1em;
+  background-color: #dee2e6;
+  color: #212529;
+  border: 0.1px solid #212529;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 16px;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-left: 5px;
 }
 </style>

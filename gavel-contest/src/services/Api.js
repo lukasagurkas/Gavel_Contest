@@ -1,8 +1,8 @@
 import axios from 'axios'
+const config = require('../configurations/config.js')
 
 export default () => {
     return axios.create({
-        baseURL: `/contest/api/`
-        //baseURL: `http://localhost:7081/` TODO
+        baseURL: config.api_base_path
     })
 }

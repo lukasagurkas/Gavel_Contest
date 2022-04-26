@@ -7,11 +7,13 @@ import firebase from "firebase/compat/app";
 import * as firebaseui from "firebaseui";
 //import "firebaseui/dist/firebaseui.css";
 
+const config = require('../configurations/config.js')
+
 export default {
   name: "auth",
   mounted() {
     var uiConfig = {
-      signInSuccessUrl: "/contest/verifyEmail",
+      signInSuccessUrl: config.verify_email_path,
       signInOptions: [
         //firebase.auth.GoogleAuthProvider.PROVIDER_ID,
         firebase.auth.EmailAuthProvider.PROVIDER_ID,
