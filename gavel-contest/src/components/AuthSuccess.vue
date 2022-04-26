@@ -271,8 +271,8 @@ export default {
 
       // sending file to the backend
       axios
-        //.post("http://localhost:7081/uploadFile", formData) #TODO
-        .post("/contest/api/uploadFile", formData)
+        .post("http://localhost:7081/uploadFile", formData) //TODO
+        //.post("/contest/api/uploadFile", formData)
         .then((res) => {
           document.querySelector(".uploadResponse").innerHTML = res;
         })
@@ -310,8 +310,8 @@ export default {
       let cipher = ""
       await GameGetterService.getCipher({name: this.gameNameList[index]}).then(res => {cipher = res.data})
 
-      //window.open("http://localhost:8000/?game=" + cipher) TODO
-      window.open("/contest/visualizer/?game=" + cipher)
+      window.open("http://localhost:8000/?game=" + cipher) //TODO
+      //window.open("/contest/visualizer/?game=" + cipher)
  
     },
     async getGameList() {

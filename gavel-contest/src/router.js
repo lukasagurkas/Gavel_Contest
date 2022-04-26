@@ -6,7 +6,7 @@ import TeamJoinCreate from './components/TeamJoinCreate.vue';
 
 const router = new VueRouter({
   mode: 'history',
-  base: '/contest/',
+  //base: '/contest/', TODO
   routes: [
     { path: '/', component: Auth },
     { path: '/auth', component: Auth },

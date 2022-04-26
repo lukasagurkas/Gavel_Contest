@@ -11,7 +11,8 @@ export default {
   name: "auth",
   mounted() {
     var uiConfig = {
-      signInSuccessUrl: "/contest/verifyEmail",
+      //signInSuccessUrl: "/contest/verifyEmail", TODO
+      signInSuccessUrl: "/verifyEmail",
       signInOptions: [
         //firebase.auth.GoogleAuthProvider.PROVIDER_ID,
         firebase.auth.EmailAuthProvider.PROVIDER_ID,
