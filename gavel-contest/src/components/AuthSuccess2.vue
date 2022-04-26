@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Signup succeeded</h1>
-    <button @click="logOut">Log out</button>
+    <v-btn @click="logOut">Log out</v-btn>
     <hr />
     <input name="team-name" type="name" placeholder="Enter Team Name" />
     <button @click="createTeam">Create new team</button>

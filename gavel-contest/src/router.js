@@ -3,11 +3,13 @@ import Auth from './components/Auth.vue';
 import AuthSuccess from './components/AuthSuccess.vue';
 import EmailVerification from './components/EmailVerification.vue';
 import TeamJoinCreate from './components/TeamJoinCreate.vue';
+import AuthSuccess2 from './components/AuthSuccess2.vue';
 
 const router = new VueRouter({
   mode: 'history',
-  base: '/contest/',
+  // base: '/contest/', TODO
   routes: [
+    { path: '/AuthSuccess2', component: AuthSuccess2},
     { path: '/', component: Auth },
     { path: '/auth', component: Auth },
     { path: '/success', component: AuthSuccess },
