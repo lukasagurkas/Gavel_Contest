@@ -1,3 +1,5 @@
 module.exports = {
-    //publicPath: '/contest/' TODO
+    transpileDependencies: [
+      'vuetify'
+    ]
 }
