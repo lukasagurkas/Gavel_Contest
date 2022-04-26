@@ -1,32 +1,76 @@
 <template>
   <div>
-    <h1>Signup succeeded</h1>
-    <button @click="logOut">Log out</button>
+    <button class="button_sign_out" style = "float: right;" @click="logOut">Log out</button>
+    <h1>Name of the game</h1>
     <hr />
-    <input name="team-name" type="name" placeholder="Enter Team Name" />
-    <button @click="createTeam">Create new team</button>
+    <input name="team-name" class = "text" type="name" placeholder="Enter Team Name" />
+    <button class="button" style="margin-left: 20px" @click="createTeam">Create new team</button>
     <br />
     <div class="error" />
     <br />
     <div>
-      <ul class="team-list">
+      <div style = "width:50%; float:left"> <ul class="team-list" >
         <li
-          class="team-name"
-          @click="clickedTeam(data.name)"
-          v-for="(data, index) in teamJSON.data"
-          :key="index"
+            class="team-name"
+            @click="clickedTeam(data.name)"
+            v-for="(data, index) in teamJSON.data"
+            :key="index"
         >
           {{ data.name }}
         </li>
         <confirm-dialogue ref="confirmDialogue"></confirm-dialogue>
         <alert-dialogue ref="alertDialogue"></alert-dialogue>
-      </ul>
+      </ul> </div>
+      <div style = "width:50%; float:right">
+        <h1> Visualize Games</h1>
+        <div id="selectGameDiv">
+          <label for="selectGame">Select which game you want to view:</label>
+
+          <select name="selectGame" id="selectGame">
+            <!-- <option
+              v-for="(data, index) in gameListJSON.data"
+              :key="index"
+              :value="data.id"
+            >
+              {{ data.team1Name + " &emsp; | &emsp; " + data.team2Name }}
+            </option> -->
+            <option v-for="(data, index) in gameList" :key="index">
+              {{ data }}
+            </option>
+          </select>
+        </div>
+
+        <!-- <button id="import" @click="viewGame">View game</button>
+
+        <button @click="getGame">View Game</button>
+        <div>
+          <p hidden id="gameId"></p>
+        </div> -->
+        <button  class="view-game" id="gameViewerLink" @click="getGameName()">View Game</button>
+        <br />
+        <h1> File Upload Section</h1>
+        <div class="file-upload">
+          <input type="file" @change="onFileChange" />
+          <button
+              @click="onUploadFile"
+              class="upload-button"
+              :disabled="!this.selectedFile"
+          >
+            Upload file
+          </button>
+        </div>
+        <div class="uploadResponse" />
+        <div class="uploadError" />
+      </div>
     </div>
     <br />
     <div>
-      <button @click="showTeamPassword">Get Team Password</button>
+      <button class="button" @click="showTeamPassword">Get Team Password</button>
       <p id="teamPasswordField"></p>
     </div>
+
+    <button class="button" @click="deleteUserTeam()">Delete User teams</button>
+
     <!-- <input type="file" id="selectFiles" value="Import" accept=".json" /><br />
     for displaying json <pre id="result"></pre>
 
@@ -60,44 +104,6 @@
     <hr>
     <pre>{{user}}</pre>-->
 
-    <div id="selectGameDiv">
-      <label for="selectGame">Select which game you want to view:</label>
-
-      <select name="selectGame" id="selectGame">
-        <!-- <option
-          v-for="(data, index) in gameListJSON.data"
-          :key="index"
-          :value="data.id"
-        >
-          {{ data.team1Name + " &emsp; | &emsp; " + data.team2Name }}
-        </option> -->
-        <option v-for="(data, index) in gameList" :key="index">
-          {{ data }}
-        </option>
-      </select>
-    </div>
-
-    <!-- <button id="import" @click="viewGame">View game</button>
-
-    <button @click="getGame">View Game</button>
-    <div>
-      <p hidden id="gameId"></p>
-    </div> -->
-    <button id="gameViewerLink" @click="getGameName()">View Game</button>
-    <br />
-    <div class="file-upload">
-      <input type="file" @change="onFileChange" />
-      <button
-        @click="onUploadFile"
-        class="upload-button"
-        :disabled="!this.selectedFile"
-      >
-        Upload file
-      </button>
-    </div>
-    <button @click="deleteUserTeam()">Delete User teams</button>
-    <div class="uploadResponse" />
-    <div class="uploadError" />
   </div>
 </template>
 
@@ -396,7 +402,6 @@ export default {
 </script>
 
 
-
 <style scoped>
 .error, .uploadError {
   color: red;
@@ -407,16 +412,106 @@ export default {
 }
 
 .team-name {
-  padding: 0.25em 0.5em;
-  background-color: #eccfc9;
-  color: #000000;
-  border: 2px solid #70352a;
+  padding: 0.5em 1em;
+  background-color: #4FB0C6;
+  color: #212529;
+  border: 0.1px solid #212529;
   border-radius: 2px;
   font-weight: bold;
-  font-size: 12px;
+  font-size: 16px;
   text-transform: uppercase;
   cursor: pointer;
-  width: 10%;
+  width: 66%;
   height: 1em;
+  margin-top: 5px;
 }
+
+.button {
+  padding: 0.5em 1em;
+  background-color: #dee2e6;
+  color: #212529;
+  border: 0.1px solid #212529;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 16px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.button_sign_out {
+  padding: 0.5em 1em;
+  background-color: #dee2e6;
+  color: #212529;
+  border: 0.1px solid #212529;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 16px;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+.text {
+  padding: 0.5em 1em;
+  background-color: #ffffff;
+  color: #212529;
+  border: 0.1px solid #212529;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 16px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.upload-button {
+  padding: 0.5em 1em;
+  background-color: #dee2e6;
+  color: #212529;
+  border: 0.1px solid #212529;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 16px;
+  text-transform: uppercase;
+  cursor: pointer;
+  align: "right";
+}
+
+.view-game {
+  padding: 0.5em 1em;
+  background-color: #dee2e6;
+  color: #212529;
+  border: 0.1px solid #212529;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 16px;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+/* Split the screen in half */
+.split {
+  height: 100%;
+  width: 50%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+/* Control the left side */
+.left {
+  left: 0;
+  background-color: #ffffff;
+  margin-left: 20px;
+}
+
+/* Control the right side */
+.right {
+  right: 0;
+  background-color: #ffffff;
+  margin-right: 20px;
+}
+
 </style>
