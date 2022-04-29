@@ -272,6 +272,10 @@ export default {
     onFileChange(e) {
       const selectedFile = e.target.files[0]; // accessing file
       this.selectedFile = selectedFile;
+      if (selectedFile.size > 1474560) {
+        alert("File exceeds 1474560 bytes");
+        document.getElementById("uploadSourceFile").value = "";
+      }
     },
     onUploadFile() {
       document.querySelector(".uploadResponse").innerHTML = "";
