@@ -21,7 +21,7 @@ module.exports = {
         // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
         tempFile = req.files.file;
 
-        if (path.extname(tempFile.name) == '.java' || path.extname(tempFile.name) == '.py') {
+        if (path.extname(tempFile.name) == '.java' || path.extname(tempFile.name) == '.py' || path.extname(tempFile.name) == '.cs') {
             let temp = req.body.teamName
             temp = temp.replace(/ /g,"_");
             if (path.parse(path.basename(tempFile.name)).name == temp) {
@@ -42,7 +42,7 @@ module.exports = {
             }
         } else {
             res.status(400).send({
-                error: "Only .java or .py file extensions are accepted"
+                error: "Only .java or .py or .cs file extensions are accepted"
             })
         }
     }
