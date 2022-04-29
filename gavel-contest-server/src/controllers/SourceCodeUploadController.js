@@ -20,21 +20,24 @@ module.exports = {
 
         // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
         tempFile = req.files.file;
-    
+
         if (path.extname(tempFile.name) == '.java' || path.extname(tempFile.name) == '.py') {
-            if (path.basename(tempFile.name) == req.body.teamName) {
+            let temp = req.body.teamName
+            temp = temp.replace(/ /g,"_");
+            if (path.parse(path.basename(tempFile.name)).name == temp) {
                 uploadPath = dirpath + tempFile.name;
 
                 // Use the mv() method to place the file somewhere on your server
                 tempFile.mv(uploadPath, function (err) {
-                    if (err)
+                    if (err) {
                         return res.status(500).send(err);
-
-                    res.send('File uploaded!');
+                    } else {
+                        res.send('File uploaded!');
+                    }
                 });
             } else {
                 res.status(400).send({
-                    error: "File name has to be the same as the team name, which is " + req.body.teamName
+                    error: "File name has to be the same as the team name (except that spaces are turned into underscores), which is " + temp
                 })
             }
         } else {

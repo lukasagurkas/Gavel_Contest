@@ -50,7 +50,7 @@
         <br />
         <h1> File Upload Section</h1>
         <div class="file-upload">
-          <input type="file" @change="onFileChange" />
+          <input type="file" id="uploadSourceFile" @change="onFileChange" />
           <button
               @click="onUploadFile"
               class="upload-button"
@@ -274,15 +274,20 @@ export default {
       this.selectedFile = selectedFile;
     },
     onUploadFile() {
+      document.querySelector(".uploadResponse").innerHTML = "";
+      document.querySelector(".uploadError").innerHTML = "";
+
       const formData = new FormData();
       formData.append("file", this.selectedFile); // appending file
       formData.append("teamName", this.teamName);
+
+      document.getElementById("uploadSourceFile").value = "";
 
       // sending file to the backend
       axios
         .post(config.upload_file_path, formData)
         .then((res) => {
-          document.querySelector(".uploadResponse").innerHTML = res;
+          document.querySelector(".uploadResponse").innerHTML = res.data;
         })
         .catch((err) => {
           document.querySelector(".uploadError").innerHTML = err.response.data.error;
