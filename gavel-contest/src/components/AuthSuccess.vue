@@ -6,6 +6,7 @@
     <div v-if="teamName">
       <p>Your team is:</p>
       <p>{{ teamName }}</p>
+      <button>Leave Team</button>
     </div>
     <div v-else>
       <p>You are not part of a team</p>
@@ -34,7 +35,8 @@
         <div id="selectGameDiv">
           <label for="gameFilter">Search for games</label>
           <br/>
-          <input type="text" name="gameFilter" id="gameFilter" v-model="gameFilter" @input="getGameList"/>
+          <input type="text" name="gameFilter" id="gameFilter" placeholder="Search games"
+            v-model="gameFilter" @input="getGameList" />
           <br/>
           <label for="selectGame">Select which game you want to view:</label>
 
