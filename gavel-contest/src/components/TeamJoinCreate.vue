@@ -158,9 +158,7 @@ export default {
       }
     },
     async getUserTeamName(vm) {
-      this.teamName = await this.getUserTeam(vm.email).then(
-        (result) => result.data
-      );
+      await this.getUserTeam(vm.email).then((result) => {if (result.data){router.push("/success")}})
     },
     async getUserTeam(email) {
       return await TeamGetterService.getUserTeam({
