@@ -6,7 +6,7 @@
     <div v-if="teamName">
       <p>Your team is:</p>
       <p>{{ teamName }}</p>
-      <button>Leave Team</button>
+      <button @click="leaveTeam">Leave Team</button>
     </div>
     <div v-else>
       <p>You are not part of a team</p>
@@ -83,8 +83,6 @@
       <p id="teamPasswordField"></p>
     </div>
 
-    <button class="button" @click="deleteUserTeam()">Delete User teams</button>
-
     <!-- <input type="file" id="selectFiles" value="Import" accept=".json" /><br />
     for displaying json <pre id="result"></pre>
 
@@ -130,6 +128,7 @@ import ConfirmDialogue from "../components/ConfirmDialogue.vue";
 import AlertDialogue from "../components/AlertDialogue.vue";
 import GameGetterService from "@/services/GameGetterService";
 import GameListGetterService from "@/services/GameListGetterService";
+import UserTeamDeletionService from "@/services/UserTeamDeletionService";
 import axios from "axios";
 import { upload_file_path } from '../configurations/config.js';
 
@@ -195,7 +194,8 @@ export default {
         await TeamCreationService.create({
           name: val,
           email: firebase.auth().currentUser.email,
-        });
+        }).then((response) => {if (response.status === 200) {this.teamName = val}})
+          .then(() => {this.teamJSON.data = this.getTeams()})
       } catch (error) {
         document.querySelector(".error").innerHTML = error.response.data.error;
       }
@@ -228,7 +228,7 @@ export default {
           okButton: "Join",
           email: firebase.auth().currentUser.email,
           name: name
-        }).then(message => {msg = message}).catch(error => {err = error.message})
+        }).then(message => {msg = message; if (msg) {this.teamName = name}}).catch(error => {err = error.message})
         
       if(!ok && err) {
         await this.$refs.alertDialogue.show({
@@ -422,8 +422,11 @@ export default {
       
     },
 
-    async deleteUserTeam() {
-      await TeamCreationService.delete()
+    async leaveTeam() {
+      if (this.teamName) {
+        await UserTeamDeletionService.delete({email: "steynmulder@hotmail.com"})
+          .then((response) => {if (response.status === 200) {this.teamName = ""}})
+      }
     }
   },
 };

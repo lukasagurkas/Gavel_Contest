@@ -8,6 +8,7 @@ const UserGetterController = require('./controllers/UserGetterController.js')
 const UserUpdateEmailController = require('./controllers/UserUpdateEmailController.js')
 const GameListGetterController = require('./controllers/GameListGetterController.js')
 const SourceCodeUploadController = require('./controllers/SourceCodeUploadController.js')
+const UserTeamDeletionController = require('./controllers/UserTeamDeletionController.js')
 
 module.exports = (app) => {
     app.post('/register',
@@ -58,4 +59,7 @@ module.exports = (app) => {
 
     app.post('/getUserIsRegistered',
         UserGetterController.getUserIsRegistered)
+
+    app.post('/deleteUserTeam',
+        UserTeamDeletionController.delete)
 }

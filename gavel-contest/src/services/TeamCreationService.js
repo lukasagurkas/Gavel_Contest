@@ -7,9 +7,5 @@ export default {
 
     join (info) {
         return Api().post('joinTeam', info)
-    },
-
-    delete () {
-        return Api().delete('deleteUserTeams')
     }
 }
