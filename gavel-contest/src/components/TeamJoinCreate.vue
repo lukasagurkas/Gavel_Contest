@@ -35,7 +35,7 @@
       </div>
       <div>
         <button class = "button" @click="teamJoinedOrCreated">Continue</button>
-        <div class="error" />
+        <p id="continueError" style="color: red"></p>
       </div>
     </div>
   </div>
@@ -95,6 +95,8 @@ export default {
 
       if (userInTeam) {
         router.push("/success");
+      } else {
+        document.querySelector("#continueError").innerHTML = "Please join a team before going further. This can be done by (1) entering a unique team name and pressing the `Create New Team` button, or (2) by clicking on an existing team in the list and entering the password, which you can get from someone who is already in the team."
       }
     },
     async getTeams() {
