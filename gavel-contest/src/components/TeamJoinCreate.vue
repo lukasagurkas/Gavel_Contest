@@ -7,8 +7,13 @@
     </div>
     <div>
       <hr />
-      <p>Your team is:</p>
-      <p>{{ teamName }}</p>
+      <div v-if="teamName">
+        <p>Your team is:</p>
+        <p>{{ teamName }}</p>
+      </div>
+      <div v-else>
+        <p>You are not part of a team</p>
+      </div>
       <input name="team-name" type="name" class = "text" placeholder="Enter Team Name" />
       <button class = "button"  style="margin-left: 20px" @click="createTeam">Create new team</button>
       <br />
@@ -69,7 +74,7 @@ export default {
       while (!userRegistered) {
         userRegistered = userIsRegistered(vm.email);
       }
-      //getTeamName(vm);
+      getTeamName(vm);
       //vm.reroute(vm.email);
     });
     team();
