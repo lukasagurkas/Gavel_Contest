@@ -68,7 +68,15 @@ const server = http.createServer(function (req, res) {
         "entity-module/errors/MissingBitmapFontError.js",
         "entity-module/errors/MissingImageError.js",
         "lib/pixi6.js",
-        "assets/background.png"]
+        "assets/startingMarker.png",
+        "assets/orange.png",
+        "lib/pixi.min.js.map",
+        "assets/red.png",
+        "assets/blue.png",
+        "favicon.ico",
+        "assets/background.jpg",
+        "assets/yellow.png",
+        "assets/green.png"]
 
         const gamesRaw = fs.readdirSync(__dirname + "\\games")
         let games = []
@@ -81,7 +89,7 @@ const server = http.createServer(function (req, res) {
         let parsedURL = url.parse(req.url, true)
         let path = parsedURL.path.replace(/^\/+|\/+$/g, "")
         if (!paths.includes(path) && !path.includes("?game=")) {
-            console.log("Access denied")
+            console.log(path)
             return;
         } else if (path.includes("?game=")) {
             path = path.slice(0, path.lastIndexOf('?'))

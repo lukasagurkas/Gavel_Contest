@@ -1,1 +1,1 @@
-export const assets = {"images":{"background.png":"assets/background.png"},"sprites":[],"fonts":[]}
+export const assets = {"images":{"background.jpg":"assets/background.jpg","blue.png":"assets/blue.png","green.png":"assets/green.png","orange.png":"assets/orange.png","red.png":"assets/red.png","startingMarker.png":"assets/startingMarker.png","yellow.png":"assets/yellow.png"},"sprites":[],"fonts":[]}
