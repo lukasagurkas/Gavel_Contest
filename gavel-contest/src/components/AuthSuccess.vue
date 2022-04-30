@@ -9,6 +9,7 @@
       <p>Your team is:</p>
       <p>{{ teamName }}</p>
       <button @click="leaveTeam">Leave Team</button>
+      <delete-dialogue ref="deleteDialogue"></delete-dialogue>
     </div>
     <div v-else>
       <p>You are not part of a team</p>
@@ -146,6 +147,7 @@ import TeamCreationService from "@/services/TeamCreationService";
 import TeamGetterService from "@/services/TeamGetterService";
 import ConfirmDialogue from "../components/ConfirmDialogue.vue";
 import AlertDialogue from "../components/AlertDialogue.vue";
+import DeleteDialogue from "../components/DeleteDialogue.vue"
 import GameGetterService from "@/services/GameGetterService";
 import GameListGetterService from "@/services/GameListGetterService";
 import UserTeamDeletionService from "@/services/UserTeamDeletionService";
@@ -197,6 +199,7 @@ export default {
   components: {
     ConfirmDialogue,
     AlertDialogue,
+    DeleteDialogue
   },
   methods: {
     logOut() {
@@ -463,9 +466,38 @@ export default {
     },
 
     async leaveTeam() {
-      if (this.teamName) {
-        await UserTeamDeletionService.delete({email: "steynmulder@hotmail.com"})
-          .then((response) => {if (response.status === 200) {this.teamName = ""}})
+      let err = "";
+      let msg = "";
+      const ok = await this.$refs.deleteDialogue
+        .show({
+          title: "Leave " + this.teamName,
+          message: "Are you sure you want to leave team '" + this.teamName + "'?",
+          okButton: "Leave",
+          email: firebase.auth().currentUser.email,
+          name: this.teamName,
+        })
+        .then((message) => {
+          msg = message;
+          if (msg) {
+            this.teamName = ""
+          }
+        })
+        .catch((error) => {
+          err = error.message;
+        });
+
+      if (!ok && err) {
+        await this.$refs.alertDialogue.show({
+          title: "You did not leave team " + this.teamName,
+          message: err,
+          okButton: "Okay",
+        });
+      } else if (!err && msg) {
+        await this.$refs.alertDialogue.show({
+          title: "You left the team",
+          message: "You successfully left team " + this.teamName,
+          okButton: "Okay",
+        });
       }
     }
   },
