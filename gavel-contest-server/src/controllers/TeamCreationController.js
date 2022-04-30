@@ -34,6 +34,7 @@ module.exports = {
                 })
     
                 await db.userteam.create({userID: userId, teamID: teamId})
+                    .then(() => {res.status(200).send("Successfully created team")})
                 
             } catch (err) {
                 res.status(400).send({

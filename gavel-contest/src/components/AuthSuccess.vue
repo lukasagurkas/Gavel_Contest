@@ -8,6 +8,8 @@
     <div v-if="teamName">
       <p>Your team is:</p>
       <p>{{ teamName }}</p>
+      <button @click="leaveTeam">Leave Team</button>
+      <delete-dialogue ref="deleteDialogue"></delete-dialogue>
     </div>
     <div v-else>
       <p>You are not part of a team</p>
@@ -49,6 +51,7 @@
             type="text"
             name="gameFilter"
             id="gameFilter"
+            placeholder="Search games"
             v-model="gameFilter"
             @input="getGameList"
           />
@@ -102,8 +105,6 @@
       <p id="teamPasswordField"></p>
     </div>
 
-    <button class="button" @click="deleteUserTeam()">Delete User teams</button>
-
     <!-- <input type="file" id="selectFiles" value="Import" accept=".json" /><br />
     for displaying json <pre id="result"></pre>
 
@@ -146,8 +147,10 @@ import TeamCreationService from "@/services/TeamCreationService";
 import TeamGetterService from "@/services/TeamGetterService";
 import ConfirmDialogue from "../components/ConfirmDialogue.vue";
 import AlertDialogue from "../components/AlertDialogue.vue";
+import DeleteDialogue from "../components/DeleteDialogue.vue"
 import GameGetterService from "@/services/GameGetterService";
 import GameListGetterService from "@/services/GameListGetterService";
+import UserTeamDeletionService from "@/services/UserTeamDeletionService";
 import axios from "axios";
 import { upload_file_path } from "../configurations/config.js";
 
@@ -196,6 +199,7 @@ export default {
   components: {
     ConfirmDialogue,
     AlertDialogue,
+    DeleteDialogue
   },
   methods: {
     logOut() {
@@ -213,7 +217,8 @@ export default {
         await TeamCreationService.create({
           name: val,
           email: firebase.auth().currentUser.email,
-        });
+        }).then((response) => {if (response.status === 200) {this.teamName = val}})
+          .then(() => {this.teamJSON.data = this.getTeams()})
       } catch (error) {
         document.querySelector(".error").innerHTML = error.response.data.error;
       }
@@ -249,6 +254,9 @@ export default {
         })
         .then((message) => {
           msg = message;
+          if (msg) {
+            this.teamName = name
+          }
         })
         .catch((error) => {
           err = error.message;
@@ -457,9 +465,41 @@ export default {
       document.querySelector("#teamPasswordField").innerHTML = "";
     },
 
-    async deleteUserTeam() {
-      await TeamCreationService.delete();
-    },
+    async leaveTeam() {
+      let err = "";
+      let msg = "";
+      const ok = await this.$refs.deleteDialogue
+        .show({
+          title: "Leave " + this.teamName,
+          message: "Are you sure you want to leave team '" + this.teamName + "'?",
+          okButton: "Leave",
+          email: firebase.auth().currentUser.email,
+          name: this.teamName,
+        })
+        .then((message) => {
+          msg = message;
+          if (msg) {
+            this.teamName = ""
+          }
+        })
+        .catch((error) => {
+          err = error.message;
+        });
+
+      if (!ok && err) {
+        await this.$refs.alertDialogue.show({
+          title: "You did not leave team " + this.teamName,
+          message: err,
+          okButton: "Okay",
+        });
+      } else if (!err && msg) {
+        await this.$refs.alertDialogue.show({
+          title: "You left the team",
+          message: "You successfully left team " + this.teamName,
+          okButton: "Okay",
+        });
+      }
+    }
   },
 };
 </script>
