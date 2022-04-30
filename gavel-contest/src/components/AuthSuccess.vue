@@ -44,6 +44,7 @@
         </ul>
       </div>
       <div style="width: 50%; float: right">
+        <button @click="viewDocumentation()">View Documentation</button>
         <h1>Visualize Games</h1>
         <div id="selectGameDiv">
           <label for="gameFilter">Search for games</label>
@@ -508,6 +509,9 @@ export default {
           message: "You have created a team! Now you can add two other people to this team by sharing the team password with them. After this you can upload your code. After the deadline you will be able to see the results of each match-up.",
           okButton: "Okay",
         });
+    },
+    viewDocumentation() {
+      window.open(`https://digital-tabletop-competition.github.io/`)
     }
   },
 };
