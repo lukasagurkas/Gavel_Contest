@@ -1,22 +1,21 @@
 <template>
   <div>
+    <div class="verificationResponse" />
     <div>
-      <p>Current email:</p>
-      <p>{{ email }}</p>
+      <p><b>Current email:</b> {{ email }}</p>
     </div>
     <p>Please verify your email</p>
     <div>
-      <button @click="resendVerificationEmail">Resend</button>
-      <button @click="emailVerified">Continue</button>
+      <button class="resend-button" @click="resendVerificationEmail">Resend</button>
+      <button style="margin-left: 20px" class="continue-button" @click="emailVerified">Continue</button>
       <div class="error" />
     </div>
-    <div>
-      <input name="new-email" type="email" placeholder="Enter new email" />
-      <button @click="setNewEmail">Set new email address</button>
+    <div style="margin-top: 20px">
+      <input name="new-email" type="email" class="text" placeholder="Enter new email" />
+      <button style="margin-left: 5px" class="setNewEmail-button" @click="setNewEmail">Set new email address</button>
       <div class="errorSettingNewEmail" />
     </div>
-    <button @click="logOut">Log out</button>
-    <div class="verificationResponse" />
+    <button style="margin-top: 20px" class="logout-button" @click="logOut">Log out</button>
     <div class="verificationError" />
   </div>
 </template>
@@ -50,7 +49,7 @@ export default {
     });
 
     let temp =
-      "Verification email sent. It might take a couple of minutes to appear in your inbox. If it doesn't apper after a couple of minutes press the resend button";
+      "Verification email sent. It might take a couple of minutes to appear in your inbox. If it doesn't apper after a couple of minutes press the resend button.";
     document.querySelector(".verificationResponse").innerHTML = temp;
   },
   methods: {
@@ -116,5 +115,31 @@ export default {
 .error,
 .verificationError {
   color: red;
+}
+
+.logout-button, 
+.resend-button,
+.continue-button,
+.setNewEmail-button {
+  padding: 0.5em 1em;
+  background-color: #dee2e6;
+  color: #212529;
+  border: 0.1px solid #212529;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 16px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.text {
+  padding: 0.5em 1em;
+  background-color: #ffffff;
+  color: #212529;
+  border: 0.1px solid #212529;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
 }
 </style>
