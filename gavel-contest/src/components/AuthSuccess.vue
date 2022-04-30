@@ -27,6 +27,7 @@
     <br />
     <div class="error" />
     <br />
+    <alert-dialogue ref="createTeamAlert"></alert-dialogue>
     <div>
       <div style="width: 50%; float: left">
         <ul class="team-list">
@@ -219,6 +220,7 @@ export default {
           email: firebase.auth().currentUser.email,
         }).then((response) => {if (response.status === 200) {this.teamName = val}})
           .then(() => {this.teamJSON.data = this.getTeams()})
+          .then(() => this.showTeamAlert())
       } catch (error) {
         document.querySelector(".error").innerHTML = error.response.data.error;
       }
@@ -499,6 +501,13 @@ export default {
           okButton: "Okay",
         });
       }
+    },
+    async showTeamAlert() {
+      await this.$refs.createTeamAlert.show({
+          title: "Created a team",
+          message: "You have created a team! Now you can add two other people to this team by sharing the team password with them. After this you can upload your code. After the deadline you will be able to see the results of each match-up.",
+          okButton: "Okay",
+        });
     }
   },
 };
