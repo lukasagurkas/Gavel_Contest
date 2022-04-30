@@ -3,6 +3,14 @@
     <button class="button_sign_out" style = "float: right;" @click="logOut">Log out</button>
     <h1>Name of the game</h1>
     <hr />
+    <div v-if="teamName">
+      <p>Your team is:</p>
+      <p>{{ teamName }}</p>
+    </div>
+    <div v-else>
+      <p>You are not part of a team</p>
+    </div>
+    
     <input name="team-name" class = "text" type="name" placeholder="Enter Team Name" />
     <button class="button" style="margin-left: 20px" @click="createTeam">Create new team</button>
     <br />
