@@ -1,6 +1,8 @@
 <template>
   <div>
-    <button class="button_sign_out" style = "float: right;" @click="logOut">Log out</button>
+    <button class="button_sign_out" style="float: right" @click="logOut">
+      Log out
+    </button>
     <h1>Name of the game</h1>
     <hr />
     <div v-if="teamName">
@@ -10,32 +12,47 @@
     <div v-else>
       <p>You are not part of a team</p>
     </div>
-    
-    <input name="team-name" class = "text" type="name" placeholder="Enter Team Name" />
-    <button class="button" style="margin-left: 20px" @click="createTeam">Create new team</button>
+
+    <input
+      name="team-name"
+      class="text"
+      type="name"
+      placeholder="Enter Team Name"
+    />
+    <button class="button" style="margin-left: 20px" @click="createTeam">
+      Create new team
+    </button>
     <br />
     <div class="error" />
     <br />
     <div>
-      <div style = "width:50%; float:left"> <ul class="team-list" >
-        <li
+      <div style="width: 50%; float: left">
+        <ul class="team-list">
+          <li
             class="team-name"
             @click="clickedTeam(data.name)"
             v-for="(data, index) in teamJSON.data"
             :key="index"
-        >
-          {{ data.name }}
-        </li>
-        <confirm-dialogue ref="confirmDialogue"></confirm-dialogue>
-        <alert-dialogue ref="alertDialogue"></alert-dialogue>
-      </ul> </div>
-      <div style = "width:50%; float:right">
-        <h1> Visualize Games</h1>
+          >
+            {{ data.name }}
+          </li>
+          <confirm-dialogue ref="confirmDialogue"></confirm-dialogue>
+          <alert-dialogue ref="alertDialogue"></alert-dialogue>
+        </ul>
+      </div>
+      <div style="width: 50%; float: right">
+        <h1>Visualize Games</h1>
         <div id="selectGameDiv">
           <label for="gameFilter">Search for games</label>
-          <br/>
-          <input type="text" name="gameFilter" id="gameFilter" v-model="gameFilter" @input="getGameList"/>
-          <br/>
+          <br />
+          <input
+            type="text"
+            name="gameFilter"
+            id="gameFilter"
+            v-model="gameFilter"
+            @input="getGameList"
+          />
+          <br />
           <label for="selectGame">Select which game you want to view:</label>
 
           <select name="selectGame" id="selectGame">
@@ -58,15 +75,17 @@
         <div>
           <p hidden id="gameId"></p>
         </div> -->
-        <button  class="view-game" id="gameViewerLink" @click="getGameName()">View Game</button>
+        <button class="view-game" id="gameViewerLink" @click="getGameName()">
+          View Game
+        </button>
         <br />
-        <h1> File Upload Section</h1>
+        <h1>File Upload Section</h1>
         <div class="file-upload">
           <input type="file" id="uploadSourceFile" @change="onFileChange" />
           <button
-              @click="onUploadFile"
-              class="upload-button"
-              :disabled="!this.selectedFile"
+            @click="onUploadFile"
+            class="upload-button"
+            :disabled="!this.selectedFile"
           >
             Upload file
           </button>
@@ -77,7 +96,9 @@
     </div>
     <br />
     <div>
-      <button class="button" @click="showTeamPassword">Get Team Password</button>
+      <button class="button" @click="showTeamPassword">
+        Get Team Password
+      </button>
       <p id="teamPasswordField"></p>
     </div>
 
@@ -115,7 +136,6 @@
     <p>{{userID}}</p>
     <hr>
     <pre>{{user}}</pre>-->
-
   </div>
 </template>
 
@@ -129,9 +149,9 @@ import AlertDialogue from "../components/AlertDialogue.vue";
 import GameGetterService from "@/services/GameGetterService";
 import GameListGetterService from "@/services/GameListGetterService";
 import axios from "axios";
-import { upload_file_path } from '../configurations/config.js';
+import { upload_file_path } from "../configurations/config.js";
 
-const config = require('../configurations/config.js')
+const config = require("../configurations/config.js");
 
 export default {
   data() {
@@ -217,29 +237,35 @@ export default {
       } catch (error) {}
     },
     async clickedTeam(name) {
-
-        let err = ""
-        let msg = ""
-        const ok = await this.$refs.confirmDialogue.show({
+      let err = "";
+      let msg = "";
+      const ok = await this.$refs.confirmDialogue
+        .show({
           title: "Join " + name,
           message: "Are you sure you want to join team '" + name + "'?",
           okButton: "Join",
           email: firebase.auth().currentUser.email,
-          name: name
-        }).then(message => {msg = message}).catch(error => {err = error.message})
-        
-      if(!ok && err) {
+          name: name,
+        })
+        .then((message) => {
+          msg = message;
+        })
+        .catch((error) => {
+          err = error.message;
+        });
+
+      if (!ok && err) {
         await this.$refs.alertDialogue.show({
-            title: "You did not join team " + name,
-            message: err,
-            okButton: "Okay",
-          });
+          title: "You did not join team " + name,
+          message: err,
+          okButton: "Okay",
+        });
       } else if (!err && msg) {
         await this.$refs.alertDialogue.show({
-            title: "You joined the team!",
-            message: "You successfully joined team " + name,
-            okButton: "Okay"
-        })
+          title: "You joined the team!",
+          message: "You successfully joined team " + name,
+          okButton: "Okay",
+        });
       }
     },
     // async onUploadGame() {
@@ -300,15 +326,25 @@ export default {
 
       document.getElementById("uploadSourceFile").value = "";
 
-      // sending file to the backend
-      axios
-        .post(config.upload_file_path, formData)
-        .then((res) => {
-          document.querySelector(".uploadResponse").innerHTML = res.data;
-        })
-        .catch((err) => {
-          document.querySelector(".uploadError").innerHTML = err.response.data.error;
-        });
+      var now = new Date();
+      var deadline = new Date(2022, 4, 21, 23, 55, 0, 0);
+
+      if (now <= deadline) {
+        // sending file to the backend
+        axios
+          .post(config.upload_file_path, formData)
+          .then((res) => {
+            document.querySelector(".uploadResponse").innerHTML = res.data;
+          })
+          .catch((err) => {
+            document.querySelector(".uploadError").innerHTML =
+              err.response.data.error;
+          });
+      } else {
+        alert(
+          "The deadline of " + deadline + " has passed"
+        );
+      }
     },
     // async viewGame() {
     //   const gameName = document.querySelector("#selectGameDiv select");
@@ -337,11 +373,14 @@ export default {
           .selectedOptions[0].innerHTML.trim()
       );
 
-      let cipher = ""
-      await GameGetterService.getCipher({name: this.gameNameList[index]}).then(res => {cipher = res.data})
+      let cipher = "";
+      await GameGetterService.getCipher({
+        name: this.gameNameList[index],
+      }).then((res) => {
+        cipher = res.data;
+      });
 
-      window.open(config.visualize_game_path + cipher)
- 
+      window.open(config.visualize_game_path + cipher);
     },
     async getGameList() {
       let rawGames = await GameListGetterService.getGames();
@@ -356,7 +395,7 @@ export default {
         .then((data) => {
           teamName = data.replace(" ", "_");
         });
-      
+
       for (let i = 0; i < rawGames.length; i++) {
         if (rawGames[i].indexOf(this.gameFilter) !== -1) {
           if (
@@ -394,7 +433,6 @@ export default {
             );
           }
         }
-        
       }
       this.gameList = displayNames;
       this.gameNameList = gameNames;
@@ -414,22 +452,22 @@ export default {
           password = data;
         });
 
-      document.querySelector("#teamPasswordField").innerHTML = password
-      await new Promise(resolve => setTimeout(resolve, 5000)).catch() 
-      document.querySelector("#teamPasswordField").innerHTML = ''
-      
+      document.querySelector("#teamPasswordField").innerHTML = password;
+      await new Promise((resolve) => setTimeout(resolve, 5000)).catch();
+      document.querySelector("#teamPasswordField").innerHTML = "";
     },
 
     async deleteUserTeam() {
-      await TeamCreationService.delete()
-    }
+      await TeamCreationService.delete();
+    },
   },
 };
 </script>
 
 
 <style scoped>
-.error, .uploadError {
+.error,
+.uploadError {
   color: red;
 }
 
@@ -439,7 +477,7 @@ export default {
 
 .team-name {
   padding: 0.5em 1em;
-  background-color: #4FB0C6;
+  background-color: #4fb0c6;
   color: #212529;
   border: 0.1px solid #212529;
   border-radius: 2px;
@@ -537,5 +575,4 @@ export default {
   background-color: #ffffff;
   margin-right: 20px;
 }
-
 </style>
