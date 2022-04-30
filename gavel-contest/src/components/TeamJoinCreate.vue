@@ -124,7 +124,6 @@ export default {
           email: firebase.auth().currentUser.email,
         })
         .then(() => this.showTeamAlert())
-        .then(this.reroute(this.email));
       } catch (error) {
         document.querySelector(".error").innerHTML = error.response.data.error;
       }
@@ -186,7 +185,7 @@ export default {
           title: "Created a team",
           message: "You have created a team! Now you can add two other people to this team by sharing the team password with them. After this you can upload your code. After the deadline you will be able to see the results of each match-up.",
           okButton: "Okay",
-        });
+        }).then(() => this.reroute(this.email));
     }
   },
 };
