@@ -193,7 +193,6 @@ export default {
   border-radius: 2px;
   font-weight: bold;
   font-size: 16px;
-  text-transform: uppercase;
   cursor: pointer;
   width: 33%;
   height: 1em;
@@ -233,7 +232,6 @@ export default {
   border-radius: 5px;
   font-weight: bold;
   font-size: 16px;
-  text-transform: uppercase;
   cursor: pointer;
 }
 
