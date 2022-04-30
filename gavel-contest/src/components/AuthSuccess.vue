@@ -32,6 +32,10 @@
       <div style = "width:50%; float:right">
         <h1> Visualize Games</h1>
         <div id="selectGameDiv">
+          <label for="gameFilter">Search for games</label>
+          <br/>
+          <input type="text" name="gameFilter" id="gameFilter" v-model="gameFilter" @input="getGameList"/>
+          <br/>
           <label for="selectGame">Select which game you want to view:</label>
 
           <select name="selectGame" id="selectGame">
@@ -144,6 +148,7 @@ export default {
       gameList: "",
       gameNameList: "",
       selectedFile: "",
+      gameFilter: "",
     };
   },
   mounted() {
@@ -353,40 +358,43 @@ export default {
         });
       
       for (let i = 0; i < rawGames.length; i++) {
-        if (
-          rawGames[i].indexOf("-" + teamName) !== -1 &&
-          rawGames[i].indexOf("-T2") !== -1
-        ) {
-          // user in second team, team 2 specific
-          gameNames.push(rawGames[i].slice(0, rawGames[i].lastIndexOf(".")));
-          displayNames.push(
-            rawGames[i]
-              .slice(0, rawGames[i].lastIndexOf("-T2"))
-              .replace("_", " ")
-          );
-        } else if (
-          rawGames[i].indexOf("-" + teamName) === -1 && // user in first team, team 1 specific
-          rawGames[i].indexOf(teamName) !== -1 &&
-          rawGames[i].indexOf("-T1") !== -1
-        ) {
-          gameNames.push(rawGames[i].slice(0, rawGames[i].lastIndexOf(".")));
-          displayNames.push(
-            rawGames[i]
-              .slice(0, rawGames[i].lastIndexOf("-T1"))
-              .replace("_", " ")
-          );
-        } else if (
-          rawGames[i].indexOf("-G") !== -1 &&
-          rawGames[i].indexOf(teamName) === -1
-        ) {
-          // general game
-          gameNames.push(rawGames[i].slice(0, rawGames[i].lastIndexOf(".")));
-          displayNames.push(
-            rawGames[i]
-              .slice(0, rawGames[i].lastIndexOf("-G"))
-              .replace("_", " ")
-          );
+        if (rawGames[i].indexOf(this.gameFilter) !== -1) {
+          if (
+            rawGames[i].indexOf("-" + teamName) !== -1 &&
+            rawGames[i].indexOf("-T2") !== -1
+          ) {
+            // user in second team, team 2 specific
+            gameNames.push(rawGames[i].slice(0, rawGames[i].lastIndexOf(".")));
+            displayNames.push(
+              rawGames[i]
+                .slice(0, rawGames[i].lastIndexOf("-T2"))
+                .replace("_", " ")
+            );
+          } else if (
+            rawGames[i].indexOf("-" + teamName) === -1 && // user in first team, team 1 specific
+            rawGames[i].indexOf(teamName) !== -1 &&
+            rawGames[i].indexOf("-T1") !== -1
+          ) {
+            gameNames.push(rawGames[i].slice(0, rawGames[i].lastIndexOf(".")));
+            displayNames.push(
+              rawGames[i]
+                .slice(0, rawGames[i].lastIndexOf("-T1"))
+                .replace("_", " ")
+            );
+          } else if (
+            rawGames[i].indexOf("-G") !== -1 &&
+            rawGames[i].indexOf(teamName) === -1
+          ) {
+            // general game
+            gameNames.push(rawGames[i].slice(0, rawGames[i].lastIndexOf(".")));
+            displayNames.push(
+              rawGames[i]
+                .slice(0, rawGames[i].lastIndexOf("-G"))
+                .replace("_", " ")
+            );
+          }
         }
+        
       }
       this.gameList = displayNames;
       this.gameNameList = gameNames;
