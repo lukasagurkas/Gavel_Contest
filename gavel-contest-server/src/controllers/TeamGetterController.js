@@ -23,25 +23,30 @@ module.exports = {
                     return user.dataValues.id
                 })
 
-            const teamId = await db.userteam.findOne({
+            if (await db.userteam.findOne({
                 where: { userId: userId }
-            })
-                .then(function (userteam) {
-                    return userteam.dataValues.teamID
-                })
+            }) != null) {
 
-            let teamName = await db.team.findOne({
-                where: { id: teamId }
-            })
-                .then(function (team) {
-                    return team.dataValues.name
+                const teamId = await db.userteam.findOne({
+                    where: { userId: userId }
                 })
+                    .then(function (userteam) {
+                        return userteam.dataValues.teamID
+                    })
 
-            if (!teamName) {
-                teamName = '-'
+                let teamName = await db.team.findOne({
+                    where: { id: teamId }
+                })
+                    .then(function (team) {
+                        return team.dataValues.name
+                    })
+
+                if (!teamName) {
+                    teamName = '-'
+                }
+
+                res.json(teamName)
             }
-
-            res.json(teamName)
         }
     },
 
