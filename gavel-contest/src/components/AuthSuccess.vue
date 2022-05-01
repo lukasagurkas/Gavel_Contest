@@ -6,9 +6,8 @@
     <h1>Name of the game</h1>
     <hr />
     <div v-if="teamName">
-      <p>Your team is:</p>
-      <p>{{ teamName }}</p>
-      <button @click="leaveTeam">Leave Team</button>
+      <p><b>Your team is:</b> {{ teamName }}</p>
+      <button class="button" style="margin-bottom: 20px" @click="leaveTeam">Leave Team</button>
       <delete-dialogue ref="deleteDialogue"></delete-dialogue>
     </div>
     <div v-else>
@@ -95,8 +94,8 @@
             Upload file
           </button>
         </div>
-        <div class="uploadResponse" />
-        <div class="uploadError" />
+        <div style="margin-bottom: 20px; margin-top: 20px" class="uploadResponse" />
+        <div style="margin-bottom: 20px; margin-top: 20px" class="uploadError" />
       </div>
     </div>
     <br />

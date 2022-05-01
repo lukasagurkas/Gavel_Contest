@@ -23,6 +23,10 @@ module.exports = {
                     return user.dataValues.id
                 })
 
+            if (await db.userteam.findOne({
+                where: { userId: userId }
+            }) != null) {
+
             const teamId = await db.userteam.findOne({
                 where: { userId: userId }
             })
@@ -42,6 +46,9 @@ module.exports = {
             }
 
             res.json(teamName)
+        } else {
+            res.json("")
+        }
         }
     },
 
