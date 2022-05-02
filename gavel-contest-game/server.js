@@ -11,7 +11,9 @@ const lookup = require("mime-types").lookup
 
 const server = http.createServer(function (req, res) {
     res.setHeader("Content-type", "application/json")
-    // res.setHeader("Access-Control-Allow-Origin", "*") TODO
+    if (process.env.NODE_ENV=="development") {
+        res.setHeader("Access-Control-Allow-Origin", "*")
+    }
 
     const buffers = [];
 
