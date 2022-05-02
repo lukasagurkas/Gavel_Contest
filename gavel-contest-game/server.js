@@ -100,7 +100,7 @@ const server = http.createServer(function (req, res) {
         }
         
         //path = path.replace(/\//g, "\\")
-        let file = __dirname + "\\" + path
+        let file = __dirname + "/" + path
 
         fs.readFile(file, function (err, content) {
             if (err) {
