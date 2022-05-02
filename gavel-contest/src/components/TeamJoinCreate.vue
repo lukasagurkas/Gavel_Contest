@@ -8,8 +8,7 @@
     <div>
       <hr />
       <div v-if="teamName">
-        <p>Your team is:</p>
-        <p>{{ teamName }}</p>
+        <p><b>Your team is:</b> {{ teamName }}</p>
       </div>
       <div v-else>
         <p>You are not part of a team</p>

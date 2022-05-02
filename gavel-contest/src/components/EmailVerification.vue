@@ -6,16 +6,37 @@
     </div>
     <p>Please verify your email</p>
     <div>
-      <button class="resend-button" @click="resendVerificationEmail">Resend</button>
-      <button style="margin-left: 20px" class="continue-button" @click="emailVerified">Continue</button>
+      <button class="resend-button" @click="resendVerificationEmail">
+        Resend
+      </button>
+      <button
+        style="margin-left: 20px"
+        class="continue-button"
+        @click="emailVerified"
+      >
+        Continue
+      </button>
       <div class="error" />
     </div>
     <div style="margin-top: 20px">
-      <input name="new-email" type="email" class="text" placeholder="Enter new email" />
-      <button style="margin-left: 5px" class="setNewEmail-button" @click="setNewEmail">Set new email address</button>
+      <input
+        name="new-email"
+        type="email"
+        class="text"
+        placeholder="Enter new email"
+      />
+      <button
+        style="margin-left: 5px"
+        class="setNewEmail-button"
+        @click="setNewEmail"
+      >
+        Set new email address
+      </button>
       <div class="errorSettingNewEmail" />
     </div>
-    <button style="margin-top: 20px" class="logout-button" @click="logOut">Log out</button>
+    <button style="margin-top: 20px" class="logout-button" @click="logOut">
+      Log out
+    </button>
     <div class="verificationError" />
   </div>
 </template>
@@ -36,10 +57,12 @@ export default {
   mounted() {
     var vm = this;
     var reg = this.register;
+    var userLocal;
 
     firebase.auth().onAuthStateChanged(function (user) {
-      vm.email = user.email
-      vm.user = user
+      vm.email = user.email;
+      vm.user = user;
+      userLocal = user;
       if (user.emailVerified) {
         reg(vm);
         router.push("/teams");
@@ -80,13 +103,14 @@ export default {
         });
     },
     emailVerified() {
-      const user = firebase.auth().currentUser;
-      if (user.emailVerified) {
-        this.register(this);
+      let vm = this
+      firebase.auth().currentUser.reload();
+      if (firebase.auth().currentUser.emailVerified) {
+        vm.register(vm);
         router.push("/teams");
       } else {
         document.querySelector(".error").innerHTML =
-          "Email was not verified or try reloading the page";
+          "Email was not verified or try pressing the Continue button again or try reloading the page";
       }
     },
     async setNewEmail() {
@@ -117,7 +141,7 @@ export default {
   color: red;
 }
 
-.logout-button, 
+.logout-button,
 .resend-button,
 .continue-button,
 .setNewEmail-button {

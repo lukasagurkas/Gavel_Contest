@@ -12,6 +12,7 @@
 <script>
 import PopupModal from './PopupModal.vue'
 import UserTeamDeletionService from "@/services/UserTeamDeletionService"
+import router from "../router";
 
 export default {
     name: 'DeleteDialogue',
@@ -52,10 +53,11 @@ export default {
         },
 
         async _confirm() {
-           await UserTeamDeletionService.delete({email: "steynmulder@hotmail.com"})
+           await UserTeamDeletionService.delete({email: this.email})
                 .then(() => {
                     this.$refs.popup.close()
                     this.resolvePromise(true)
+                    router.push("/teams")
                 }).catch(error => {
                     this.$refs.popup.close()
                     this.rejectPromise(new Error(error.response.data.error))
