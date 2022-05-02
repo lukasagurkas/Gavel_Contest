@@ -3,7 +3,7 @@
     <button class="button_sign_out" style="float: right" @click="logOut">
       Log out
     </button>
-    <h1>Name of the game</h1>
+    <h1>Digital Tabletop Competition</h1>
     <hr />
     <div v-if="teamName">
       <p>Your team is:</p>

@@ -78,7 +78,7 @@ const server = http.createServer(function (req, res) {
         "assets/yellow.png",
         "assets/green.png"]
 
-        const gamesRaw = fs.readdirSync(__dirname + "\\games")
+        const gamesRaw = fs.readdirSync(__dirname + "/games")
         let games = []
         for (let i = 0; i < gamesRaw.length; i++) {
             games.push("games/" + gamesRaw[i])
