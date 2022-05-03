@@ -1,143 +1,101 @@
 <template>
+<div class="container">
   <div>
-    <button class="button_sign_out" style="float: right" @click="logOut">
-      Log out
-    </button>
-    <h1>Digital Tabletop Competition</h1>
-    <hr />
-    <div v-if="teamName">
-      <p><b>Your team is:</b> {{ teamName }}</p>
-      <button class="button" style="margin-bottom: 20px" @click="leaveTeam">Leave Team</button>
-      <delete-dialogue ref="deleteDialogue"></delete-dialogue>
+    <div class="header">
+      <button class="button_sign_out" style="float: right" @click="logOut">
+        Log out
+      </button>
+      <h1>Digital Tabletop Competition</h1>
+      <hr />
     </div>
-    <div v-else>
-      <p>You are not part of a team</p>
-    </div>
-
-    <input
-      name="team-name"
-      class="text"
-      type="name"
-      placeholder="Enter Team Name"
-    />
-    <button class="button" style="margin-left: 20px" @click="createTeam">
-      Create new team
-    </button>
-    <br />
-    <div class="error" />
-    <br />
-    <alert-dialogue ref="createTeamAlert"></alert-dialogue>
-    <div>
-      <div style="width: 50%; float: left">
-        <ul class="team-list">
-          <li
-            class="team-name"
-            @click="clickedTeam(data.name)"
-            v-for="(data, index) in teamJSON.data"
-            :key="index"
-          >
-            {{ data.name }}
-          </li>
-          <confirm-dialogue ref="confirmDialogue"></confirm-dialogue>
-          <alert-dialogue ref="alertDialogue"></alert-dialogue>
-        </ul>
+    <div class="main">
+      <div v-if="teamName">
+        <p><b>Your team is:</b> {{ teamName }}</p>
+        <button class="button" style="margin-bottom: 20px" @click="leaveTeam">Leave Team</button>
+        <delete-dialogue ref="deleteDialogue"></delete-dialogue>
       </div>
-      <div style="width: 50%; float: right">
-        <button @click="viewDocumentation()">View Documentation</button>
-        <h1>Visualize Games</h1>
-        <div id="selectGameDiv">
-          <label for="gameFilter">Search for games</label>
-          <br />
-          <input
-            type="text"
-            name="gameFilter"
-            id="gameFilter"
-            placeholder="Search games"
-            v-model="gameFilter"
-            @input="getGameList"
-          />
-          <br />
-          <label for="selectGame">Select which game you want to view:</label>
-
-          <select name="selectGame" id="selectGame">
-            <!-- <option
-              v-for="(data, index) in gameListJSON.data"
-              :key="index"
-              :value="data.id"
-            >
-              {{ data.team1Name + " &emsp; | &emsp; " + data.team2Name }}
-            </option> -->
-            <option v-for="(data, index) in gameList" :key="index">
-              {{ data }}
-            </option>
-          </select>
-        </div>
-
-        <!-- <button id="import" @click="viewGame">View game</button>
-
-        <button @click="getGame">View Game</button>
-        <div>
-          <p hidden id="gameId"></p>
-        </div> -->
-        <button class="view-game" id="gameViewerLink" @click="getGameName()">
-          View Game
+      <div v-else>
+        <p>You are not part of a team</p>
+      </div>
+      <div v-if="!teamName">
+        <input
+        name="team-name"
+        class="text"
+        type="name"
+        placeholder="Enter Team Name"
+        />
+        <button class="button" style="margin-left: 20px" @click="createTeam">
+        Create new team
         </button>
         <br />
-        <h1>File Upload Section</h1>
-        <div class="file-upload">
-          <input type="file" id="uploadSourceFile" @change="onFileChange" />
-          <button
-            @click="onUploadFile"
-            class="upload-button"
-            :disabled="!this.selectedFile"
-          >
-            Upload file
-          </button>
+        <div class="error" />
+        <br />
+        <alert-dialogue ref="createTeamAlert"></alert-dialogue>
+        <div style="width: 50%; float: left">
+          <ul class="team-list">
+            <li
+              class="team-name"
+              @click="clickedTeam(data.name)"
+              v-for="(data, index) in teamJSON.data"
+              :key="index"
+            >
+              {{ data.name }}
+            </li>
+            <confirm-dialogue ref="confirmDialogue"></confirm-dialogue>
+            <alert-dialogue ref="alertDialogue"></alert-dialogue>
+          </ul>
         </div>
-        <div style="margin-bottom: 20px; margin-top: 20px" class="uploadResponse" />
-        <div style="margin-bottom: 20px; margin-top: 20px" class="uploadError" />
+      </div>
+        <div style="width: 50%; float: right">
+          <button @click="viewDocumentation()">View Documentation</button>
+          <h1>Visualize Games</h1>
+          <div id="selectGameDiv">
+            <label for="gameFilter">Search for games</label>
+            <br />
+            <input
+              type="text"
+              name="gameFilter"
+              id="gameFilter"
+              placeholder="Search games"
+              v-model="gameFilter"
+              @input="getGameList"
+            />
+            <br />
+            <label for="selectGame">Select which game you want to view:</label>
+
+            <select name="selectGame" id="selectGame">
+              <option v-for="(data, index) in gameList" :key="index">
+                {{ data }}
+              </option>
+            </select>
+          </div>
+          <button class="view-game" id="gameViewerLink" @click="getGameName()">
+            View Game
+          </button>
+          <br />
+          <h1>File Upload Section</h1>
+          <div class="file-upload">
+            <input type="file" id="uploadSourceFile" @change="onFileChange" />
+            <button
+              @click="onUploadFile"
+              class="upload-button"
+              :disabled="!this.selectedFile"
+            >
+              Upload file
+            </button>
+          </div>
+          <div style="margin-bottom: 20px; margin-top: 20px" class="uploadResponse" />
+          <div style="margin-bottom: 20px; margin-top: 20px" class="uploadError" />
+        </div>
+      </div>
+      <br />
+      <div>
+        <button class="button" @click="showTeamPassword">
+          Get Team Password
+        </button>
+        <p id="teamPasswordField"></p>
       </div>
     </div>
-    <br />
-    <div>
-      <button class="button" @click="showTeamPassword">
-        Get Team Password
-      </button>
-      <p id="teamPasswordField"></p>
-    </div>
-
-    <!-- <input type="file" id="selectFiles" value="Import" accept=".json" /><br />
-    for displaying json <pre id="result"></pre>
-
-    <div id="selectTeamName1Div">
-      <label for="Team 1">Choose team 1:</label>
-
-      <select name="Team 1" id="Team 1">
-        <option v-for="(data, index) in teamJSON.data" :key="index">
-          {{ data.name }}
-        </option>
-      </select>
-    </div>
-    <div id="selectTeamName2Div">
-      <label for="Team 2">Choose team 2:</label>
-
-      <select name="Team 2" id="Team 2">
-        <option v-for="(data, index) in teamJSON.data" :key="index">
-          {{ data.name }}
-        </option>
-      </select>
-    </div>
-    <button id="import" @click="onUploadGame">
-      Upload game and team information
-    </button>
-
-    <div class="error_upload_game"/> -->
-    <!--<img :src="photo" style='height: 120px'> <br>
-    <p>{{name}}</p>
-    <p>{{email}}</p>
-    <p>{{userID}}</p>
-    <hr>
-    <pre>{{user}}</pre>-->
   </div>
 </template>
 
