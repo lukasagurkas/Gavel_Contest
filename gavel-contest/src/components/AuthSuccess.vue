@@ -295,7 +295,7 @@ export default {
       document.getElementById("uploadSourceFile").value = "";
 
       var now = new Date();
-      var deadline = new Date(2022, 4, 21, 23, 55, 0, 0);
+      var deadline = new Date(2022, 4, 21, 23, 59, 0, 0);
 
       if (now <= deadline) {
         // sending file to the backend
