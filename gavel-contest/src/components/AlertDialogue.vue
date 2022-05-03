@@ -56,8 +56,8 @@ export default {
 
 .ok-btn {
   padding: 0.5em 1em;
-  background-color: #dee2e6;
-  color: #212529;
+  background-color: #4BB052;
+  color: #F2FFED;
   border: 0.1px solid #212529;
   border-radius: 5px;
   font-weight: bold;
@@ -65,5 +65,6 @@ export default {
   text-transform: uppercase;
   cursor: pointer;
   margin-left: 5px;
+  font-family: 'Fira Sans';   
 }
 </style>

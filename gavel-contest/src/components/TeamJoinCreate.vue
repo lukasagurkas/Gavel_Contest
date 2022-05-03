@@ -1,25 +1,28 @@
 <template>
-  <div>
-    <button class="button_sign_out" style = "float: right;" @click="logOut">Log out</button>
-    <div>
-      <h1>Name of the game</h1>
-
+  <div class="container">
+    <div class="header">
+    <button class="button" style = "float: right;" @click="logOut">Log out</button>
+      <h1>Digital Tabletop Competition</h1>
     </div>
-    <div>
-      <hr />
-      <div v-if="teamName">
-        <p><b>Your team is:</b> {{ teamName }}</p>
+    <div class="content">
+      <div class="create-team">
+        <div v-if="teamName">
+          <p><b>Your team is:</b> {{ teamName }}</p>
+        </div>
+        <div v-else>
+          <h2>You are not part of a team</h2>
+        </div>
+        <input id="create-team-name-input" name="team-name" type="name" class = "text" placeholder="Enter Team Name" />
+        <br/>
+        <button class = "button" style="margin-top:10px" @click="createTeam">Create new team</button>
+        <br />
+        <div class="error" />
+        <br />
+        <alert-dialogue ref="createTeamAlert"></alert-dialogue>
       </div>
-      <div v-else>
-        <p>You are not part of a team</p>
-      </div>
-      <input name="team-name" type="name" class = "text" placeholder="Enter Team Name" />
-      <button class = "button"  style="margin-left: 20px" @click="createTeam">Create new team</button>
-      <br />
-      <div class="error" />
-      <br />
-      <alert-dialogue ref="createTeamAlert"></alert-dialogue>
-      <div>
+      <div class="teams">
+        <h2>Teams:</h2>
+        <br/>
         <ul class="team-list">
           <li
             class="team-name"
@@ -32,10 +35,6 @@
           <confirm-dialogue ref="confirmDialogue"></confirm-dialogue>
           <alert-dialogue ref="alertDialogue"></alert-dialogue>
         </ul>
-      </div>
-      <div>
-        <button class = "button" @click="teamJoinedOrCreated">Continue</button>
-        <p id="continueError" style="color: red"></p>
       </div>
     </div>
   </div>
@@ -196,14 +195,24 @@ export default {
 }
 
 .team-list {
+  height: 210px;
+  margin-top: -40px;
   list-style-type: none;
+  overflow: hidden;
+  overflow-y: scroll;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.team-list::-webkit-scrollbar {
+  display: none;
 }
 
 .team-name {
   padding: 0.5em 1em;
-  background-color: #4FB0C6;
-  color: #212529;
-  border: 0.1px solid #212529;
+  background-color: #1a2e3f;
+  color: #F2FFED;
+  border: 0.1px solid #F2FFED;
   border-radius: 2px;
   font-weight: bold;
   font-size: 16px;
@@ -211,18 +220,23 @@ export default {
   width: 33%;
   height: 1em;
   margin-top: 5px;
+  font-family: 'Fira Sans';
+  border-radius: 5px;
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
+  margin-left: 125px;
 }
 
 .button {
   padding: 0.5em 1em;
-  background-color: #dee2e6;
-  color: #212529;
-  border: 0.1px solid #212529;
+  background-color: #4BB052;
+  color: #F2FFED;
+  border: 0.1px solid #F2FFED;
   border-radius: 5px;
   font-weight: bold;
   font-size: 16px;
   text-transform: uppercase;
   cursor: pointer;
+  font-family: 'Fira Sans';
 }
 
 .button_sign_out {
@@ -288,4 +302,46 @@ export default {
   margin-right: 20px;
 }
 
+.header {
+  width: 100%;
+  margin: 1rem;
+  height: 50px;
+}
+
+.header .button {
+  margin-right: 50px;
+  float: right;
+}
+
+.container {
+  font-family: 'Fira Sans';
+}
+
+.content {
+  width: 70%;
+  height: 200px;
+  padding: 2rem;
+  padding-bottom: 100px;
+  margin-left: 15%;
+  text-align: center;
+  background-color: #ffffff;
+  border-radius: 5px;
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
+  margin-top: 75px;
+}
+
+.create-team {
+  width: 40%;
+  display: inline-block;
+}
+
+.teams {
+  width: 50%;
+  float: right;
+  text-align: center;
+}
+
+#create-team-name-input::placeholder {
+  text-align: center;
+}
 </style>

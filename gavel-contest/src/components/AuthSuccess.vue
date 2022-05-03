@@ -1,54 +1,61 @@
 <template>
 <div class="container">
-  <div>
     <div class="header">
-      <button class="button_sign_out" style="float: right" @click="logOut">
+      <button class="button" style="float: right" @click="logOut">
         Log out
       </button>
       <h1>Digital Tabletop Competition</h1>
-      <hr />
     </div>
-    <div class="main">
-      <div v-if="teamName">
-        <p><b>Your team is:</b> {{ teamName }}</p>
+    <div class="content">
+      <div class="your-team">
+        <div v-if="teamName">
+        <h2><b>Your team is:</b> {{ teamName }}</h2>
         <button class="button" style="margin-bottom: 20px" @click="leaveTeam">Leave Team</button>
         <delete-dialogue ref="deleteDialogue"></delete-dialogue>
-      </div>
-      <div v-else>
-        <p>You are not part of a team</p>
-      </div>
-      <div v-if="!teamName">
-        <input
-        name="team-name"
-        class="text"
-        type="name"
-        placeholder="Enter Team Name"
-        />
-        <button class="button" style="margin-left: 20px" @click="createTeam">
-        Create new team
-        </button>
-        <br />
-        <div class="error" />
-        <br />
-        <alert-dialogue ref="createTeamAlert"></alert-dialogue>
-        <div style="width: 50%; float: left">
-          <ul class="team-list">
-            <li
-              class="team-name"
-              @click="clickedTeam(data.name)"
-              v-for="(data, index) in teamJSON.data"
-              :key="index"
-            >
-              {{ data.name }}
-            </li>
-            <confirm-dialogue ref="confirmDialogue"></confirm-dialogue>
-            <alert-dialogue ref="alertDialogue"></alert-dialogue>
-          </ul>
         </div>
+        <div v-else>
+          <h2>You are not part of a team</h2>
+        </div>
+        <div v-if="!teamName">
+          <input
+          name="team-name"
+          class="text"
+          type="name"
+          placeholder="Enter Team Name"
+          />
+          <button class="button" style="margin-left: 20px" @click="createTeam">
+          Create new team
+          </button>
+          <br />
+          <div class="error"></div>
+          <br />
+          <alert-dialogue ref="createTeamAlert"></alert-dialogue>
+        </div>
+        <button class="button" @click="showTeamPassword">
+            Get Team Password
+          </button>
+          <p id="teamPasswordField"></p>
+        <button class="button" @click="viewDocumentation()">View Documentation</button>
       </div>
-        <div style="width: 50%; float: right">
-          <button @click="viewDocumentation()">View Documentation</button>
-          <h1>Visualize Games</h1>
+      <!-- <div class="teams">
+        <h2>Teams:</h2>
+        <br/>
+        <ul class="team-list">
+          <li
+            class="team-name"
+            @click="clickedTeam(data.name)"
+            v-for="(data, index) in teamJSON.data"
+            :key="index"
+          >
+            {{ data.name }}
+          </li>
+          <confirm-dialogue ref="confirmDialogue"></confirm-dialogue>
+          <alert-dialogue ref="alertDialogue"></alert-dialogue>
+        </ul>
+      </div> -->
+      <div class="other">
+          
+          <!-- <h1>Visualize Games</h1>
           <div id="selectGameDiv">
             <label for="gameFilter">Search for games</label>
             <br />
@@ -69,16 +76,16 @@
               </option>
             </select>
           </div>
-          <button class="view-game" id="gameViewerLink" @click="getGameName()">
+          <button class="button" id="gameViewerLink" @click="getGameName()">
             View Game
           </button>
-          <br />
-          <h1>File Upload Section</h1>
+          <br /> -->
+          <h2>Upload Source Code</h2>
           <div class="file-upload">
             <input type="file" id="uploadSourceFile" @change="onFileChange" />
             <button
               @click="onUploadFile"
-              class="upload-button"
+              class="button"
               :disabled="!this.selectedFile"
             >
               Upload file
@@ -86,17 +93,9 @@
           </div>
           <div style="margin-bottom: 20px; margin-top: 20px" class="uploadResponse" />
           <div style="margin-bottom: 20px; margin-top: 20px" class="uploadError" />
-        </div>
-      </div>
-      <br />
-      <div>
-        <button class="button" @click="showTeamPassword">
-          Get Team Password
-        </button>
-        <p id="teamPasswordField"></p>
-      </div>
+        </div> 
     </div>
-  </div>
+</div>
 </template>
 
 <script>
@@ -236,46 +235,7 @@ export default {
         });
       }
     },
-    // async onUploadGame() {
-    //   {
-    //     const files = document.getElementById("selectFiles").files;
-    //     if (files.length <= 0) {
-    //       return false;
-    //     }
 
-    //     const fr = new FileReader();
-
-    //     fr.onload = async (e) => {
-    //       const result = JSON.parse(e.target.result);
-    //       const formatted = JSON.stringify(result, null, 2);
-    //       // document.getElementById("result").innerHTML = formatted; // Displays json
-    //       // const team1NameTemp = document.querySelector(
-    //       //   "#selectTeamName1Div select"
-    //       // );
-    //       // const team2NameTemp = document.querySelector(
-    //       //   "#selectTeamName2Div select"
-    //       // );
-
-    //       // const team1Name = team1NameTemp.selectedOptions[0].innerHTML;
-    //       // const team2Name = team2NameTemp.selectedOptions[0].innerHTML;
-
-    //       // console.log("Team 1:", team1Name);
-    //       // console.log("Team 2:", team2Name);
-
-    //       try {
-    //         await GameInfoServe.uploadGame({
-    //           gameJSON: formatted,
-    //           team1Name: team1Name,
-    //           team2Name: team2Name,
-    //         });
-    //       } catch (error) {
-    //         document.querySelector(".error_upload_game").innerHTML =
-    //           error.response.data.error;
-    //       }
-    //     };
-    //     fr.readAsText(files.item(0));
-    //   }
-    // },
     onFileChange(e) {
       const selectedFile = e.target.files[0]; // accessing file
       this.selectedFile = selectedFile;
@@ -314,25 +274,7 @@ export default {
         );
       }
     },
-    // async viewGame() {
-    //   const gameName = document.querySelector("#selectGameDiv select");
 
-    //   //const gameId = document.querySelector("#selectGameDiv option:checked").value;
-
-    //   const gameId = document.querySelector("#gameId").innerHTML;
-
-    //   console.log(gameName.selectedOptions[0].innerHTML);
-    //   console.log(gameId);
-    // },
-    // selectGameId(id) {
-    //   document.querySelector("#gameId").innerHTML =
-    //     id.target.selectedOptions[0].value;
-    // },
-    // async getGame() {
-    //   const id = document.querySelector("#gameId").innerHTML
-    //   const game = this.gameListJSON.data.filter(function(json) {return (json['id'] == id);})[0].game
-    //   await GameSenderService.sendGame(game)
-    // },
     async getGameName() {
       var link = document.querySelector("#gameViewerLink");
       const index = this.gameList.indexOf(
@@ -483,32 +425,46 @@ export default {
 
 .team-list {
   list-style-type: none;
+  overflow: hidden;
+  overflow-y: scroll;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.team-list::-webkit-scrollbar {
+  display: none;
 }
 
 .team-name {
   padding: 0.5em 1em;
-  background-color: #4fb0c6;
-  color: #212529;
-  border: 0.1px solid #212529;
+  background-color: #1a2e3f;
+  color: #F2FFED;
+  border: 0.1px solid #F2FFED;
   border-radius: 2px;
   font-weight: bold;
   font-size: 16px;
   cursor: pointer;
-  width: 66%;
+  width: 30em;
   height: 1em;
   margin-top: 5px;
+  font-family: 'Fira Sans';
+  border-radius: 5px;
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
+  margin: auto;
+
 }
 
 .button {
   padding: 0.5em 1em;
-  background-color: #dee2e6;
-  color: #212529;
-  border: 0.1px solid #212529;
+  background-color: #4BB052;
+  color: #F2FFED;
+  border: 0.1px solid #F2FFED;
   border-radius: 5px;
   font-weight: bold;
   font-size: 16px;
   text-transform: uppercase;
   cursor: pointer;
+  font-family: 'Fira Sans';
 }
 
 .button_sign_out {
@@ -585,4 +541,55 @@ export default {
   background-color: #ffffff;
   margin-right: 20px;
 }
+
+.header {
+  width: 100%;
+  margin: 1rem;
+  height: 50px;
+}
+
+.header .button {
+  margin-right: 50px;
+  float: right;
+}
+
+.container {
+  font-family: 'Fira Sans';
+}
+
+.your-team {
+  width: 25%;
+  padding: 1rem;
+  display:inline-block;
+  box-sizing: border-box;
+  vertical-align: top;
+  text-align: center;
+}
+
+/* .teams {
+  width: 40%;
+  height: 500px;
+  background-color: #ffffff;
+  display: inline-block;
+  box-sizing: border-box;
+  vertical-align: top;
+  text-align: center;
+  padding-right: 40px;
+}
+
+.teams h2 {
+  padding-left: 40px;
+} */
+.other {
+  width: 65%;
+  height: 400px;
+  padding: 1rem;
+  display: inline-block;
+  vertical-align: top;
+  text-align: center;
+  background-color: #ffffff;
+  border-radius: 5px;
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
 </style>

@@ -50,6 +50,7 @@ export default {
     display: flex;
     align-items: center;
     z-index: 1;
+    font-family: 'Fira Sans';
 }
 
 .window {
@@ -60,5 +61,6 @@ export default {
     margin-left: auto;
     margin-right: auto;
     padding: 1rem;
+    font-family: 'Fira Sans';
 }
 </style>
