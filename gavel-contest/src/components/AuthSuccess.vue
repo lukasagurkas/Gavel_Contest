@@ -55,7 +55,7 @@
       </div> -->
       <div class="other">
           
-          <!-- <h1>Visualize Games</h1>
+          <h1>Visualize Games</h1>
           <div id="selectGameDiv">
             <label for="gameFilter">Search for games</label>
             <br />
@@ -79,7 +79,7 @@
           <button class="button" id="gameViewerLink" @click="getGameName()">
             View Game
           </button>
-          <br /> -->
+          <br />
           <h2>Upload Source Code</h2>
           <div class="file-upload">
             <input type="file" id="uploadSourceFile" @change="onFileChange" />
@@ -307,6 +307,7 @@ export default {
         });
 
       for (let i = 0; i < rawGames.length; i++) {
+        
         if (rawGames[i].indexOf(this.gameFilter) !== -1) {
           if (
             rawGames[i].indexOf("-" + teamName) !== -1 &&
@@ -317,7 +318,7 @@ export default {
             displayNames.push(
               rawGames[i]
                 .slice(0, rawGames[i].lastIndexOf("-T2"))
-                .replace("_", " ")
+                .replace(/_/g, " ")
             );
           } else if (
             rawGames[i].indexOf("-" + teamName) === -1 && // user in first team, team 1 specific
@@ -328,18 +329,20 @@ export default {
             displayNames.push(
               rawGames[i]
                 .slice(0, rawGames[i].lastIndexOf("-T1"))
-                .replace("_", " ")
+                .replace(/_/g, " ")
             );
           } else if (
             rawGames[i].indexOf("-G") !== -1 &&
-            rawGames[i].indexOf(teamName) === -1
+            rawGames[i].indexOf(teamName) === -1 &&
+            rawGames[i].indexOf("-T1") === -1 &&
+            rawGames[i].indexOf("-T2") === -1
           ) {
             // general game
             gameNames.push(rawGames[i].slice(0, rawGames[i].lastIndexOf(".")));
             displayNames.push(
               rawGames[i]
                 .slice(0, rawGames[i].lastIndexOf("-G"))
-                .replace("_", " ")
+                .replace(/_/g, " ")
             );
           }
         }
